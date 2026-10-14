@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
-import 'package:flutter_base_template/core/widgets/animations/app_animate.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/widgets/animations/app_animate.dart';
 
 /// Applies incremental stagger delays to children in lists or grids.
 class StaggeredAnimation extends StatelessWidget {

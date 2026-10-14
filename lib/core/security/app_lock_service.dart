@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 // TODO: Uncomment when `local_auth` package is enabled in pubspec.yaml:
 // import 'package:local_auth/local_auth.dart';

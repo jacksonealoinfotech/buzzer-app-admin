@@ -1,14 +1,15 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_base_template/core/database/app_database.dart';
-import 'package:flutter_base_template/core/database/daos/items_dao.dart';
-import 'package:flutter_base_template/core/services/storage/local_storage_service.dart';
+import 'package:buzzer_app_admin/core/database/app_database.dart';
+import 'package:buzzer_app_admin/core/database/daos/items_dao.dart';
+import 'package:buzzer_app_admin/core/services/storage/local_storage_service.dart';
 
 @module
 abstract class StorageModule {
   @preResolve
   @lazySingleton
-  Future<SharedPreferences> get sharedPreferences => SharedPreferences.getInstance();
+  Future<SharedPreferences> get sharedPreferences =>
+      SharedPreferences.getInstance();
 
   @lazySingleton
   AppDatabase get appDatabase => AppDatabase();

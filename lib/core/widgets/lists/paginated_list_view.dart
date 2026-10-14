@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/widgets/views/state_views.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/widgets/views/state_views.dart';
 
 /// Generic infinite-scroll paginated list view with:
 /// - Pull-to-refresh

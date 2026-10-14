@@ -1,6 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base_template/core/config/flavor.dart';
+import 'package:buzzer_app_admin/core/config/flavor.dart';
 
 /// Policy dictating response when device integrity compromise is detected.
 enum IntegrityPolicy {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/di/injection.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/security/secure_text_field.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
-import 'package:flutter_base_template/core/widgets/buttons/app_button.dart';
-import 'package:flutter_base_template/core/widgets/inputs/app_text_field.dart';
+import 'package:buzzer_app_admin/core/di/injection.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/security/secure_text_field.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/widgets/buttons/app_button.dart';
+import 'package:buzzer_app_admin/core/widgets/inputs/app_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,8 +26,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Store in-memory access token & secure refresh token via TokenManager
     await getIt<TokenManager>().saveTokens(
-      accessToken: 'demo_jwt_access_token_${DateTime.now().millisecondsSinceEpoch}',
-      refreshToken: 'demo_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
+      accessToken:
+          'demo_jwt_access_token_${DateTime.now().millisecondsSinceEpoch}',
+      refreshToken:
+          'demo_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
     );
 
     if (mounted) {

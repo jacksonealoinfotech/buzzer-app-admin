@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base_template/core/error/error_mapper.dart';
-import 'package:flutter_base_template/core/error/failure.dart';
+import 'package:buzzer_app_admin/core/error/error_mapper.dart';
+import 'package:buzzer_app_admin/core/error/failure.dart';
 
 /// Sealed functional return type representing either a [Success] with value [T]
 /// or a [FailureResult] with domain [Failure].

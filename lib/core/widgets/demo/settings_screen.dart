@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/localization/locale_cubit.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/theme/theme_cubit.dart';
-import 'package:flutter_base_template/core/widgets/display/common_components.dart';
+import 'package:buzzer_app_admin/core/localization/locale_cubit.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/theme/theme_cubit.dart';
+import 'package:buzzer_app_admin/core/widgets/display/common_components.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -27,7 +27,10 @@ class SettingsScreen extends StatelessWidget {
                   leading: const Icon(Icons.palette_outlined),
                   title: const Text('Theme Mode'),
                   subtitle: Text(themeCubit.state.name.toUpperCase()),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                  ),
                   onTap: () => themeCubit.toggleTheme(),
                 ),
                 const Divider(),
@@ -35,7 +38,10 @@ class SettingsScreen extends StatelessWidget {
                   leading: const Icon(Icons.language_outlined),
                   title: const Text('Language'),
                   subtitle: Text(localeCubit.state.languageCode.toUpperCase()),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                  ),
                   onTap: () => localeCubit.toggleLocale(),
                 ),
               ],

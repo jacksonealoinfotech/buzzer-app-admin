@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 /// HTTP Retry interceptor executing exponential backoff with random jitter.
 class RetryInterceptor extends Interceptor {

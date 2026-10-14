@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
-import 'package:flutter_base_template/core/constants/storage_keys.dart';
-import 'package:flutter_base_template/core/security/token_storage.dart';
+
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/constants/storage_keys.dart';
+import 'package:buzzer_app_admin/core/security/token_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Single source of truth for authentication tokens adhering to OWASP MASVS:
@@ -15,8 +16,8 @@ final class TokenManager {
   TokenManager({
     required TokenStorage tokenStorage,
     required SharedPreferences preferences,
-  })  : _tokenStorage = tokenStorage,
-        _preferences = preferences;
+  }) : _tokenStorage = tokenStorage,
+       _preferences = preferences;
 
   final TokenStorage _tokenStorage;
   final SharedPreferences _preferences;
@@ -39,7 +40,8 @@ final class TokenManager {
   /// Initializes TokenManager. Must be called on application bootstrap.
   /// Detects first launch and wipes stale Keychain data left over from prior installs.
   Future<void> initialize() async {
-    final hasRunBefore = _preferences.getBool(StorageKeys.hasRunBefore) ?? false;
+    final hasRunBefore =
+        _preferences.getBool(StorageKeys.hasRunBefore) ?? false;
     if (!hasRunBefore) {
       // First launch: wipe stale Keychain entries on iOS
       await _tokenStorage.clearAll();
@@ -88,7 +90,8 @@ final class TokenManager {
     if (token == null) return true;
 
     final expiry = extractJwtExpiry(token);
-    if (expiry == null) return false; // If not a valid JWT, rely on HTTP 401 interceptor
+    if (expiry == null)
+      return false; // If not a valid JWT, rely on HTTP 401 interceptor
 
     final threshold = DateTime.now().add(AppDurations.tokenExpirySafetyWindow);
     return expiry.isBefore(threshold);
@@ -101,7 +104,8 @@ final class TokenManager {
   Future<String?> singleFlightRefresh({
     required Future<(String accessToken, String? newRefreshToken)> Function(
       String currentRefreshToken,
-    ) refreshCall,
+    )
+    refreshCall,
     required Future<void> Function() onRefreshFailed,
   }) async {
     // 1. If refresh is already underway, await existing completer
@@ -118,8 +122,9 @@ final class TokenManager {
       }
 
       // Execute network refresh call
-      final (newAccessToken, newRefreshToken) =
-          await refreshCall(currentRefreshToken);
+      final (newAccessToken, newRefreshToken) = await refreshCall(
+        currentRefreshToken,
+      );
 
       // Save new access token to memory
       _inMemoryAccessToken = newAccessToken;

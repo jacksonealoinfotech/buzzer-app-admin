@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 /// Animated expand/collapse container wrapping dynamic children.
 class ExpandableSection extends StatelessWidget {
@@ -21,8 +21,9 @@ class ExpandableSection extends StatelessWidget {
     return AnimatedCrossFade(
       firstChild: const SizedBox(width: double.infinity, height: 0),
       secondChild: child,
-      crossFadeState:
-          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      crossFadeState: isExpanded
+          ? CrossFadeState.showSecond
+          : CrossFadeState.showFirst,
       duration: duration,
       sizeCurve: curve,
     );

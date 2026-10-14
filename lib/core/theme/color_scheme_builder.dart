@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/theme/app_colors.dart';
+import 'package:buzzer_app_admin/core/theme/app_colors.dart';
 
 /// Builds complete, balanced Material 3 [ColorScheme] instances for light and dark themes.
 abstract final class ColorSchemeBuilder {

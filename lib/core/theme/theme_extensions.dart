@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/theme/app_colors.dart';
+import 'package:buzzer_app_admin/core/theme/app_colors.dart';
 
 /// Semantic status colors (Success, Warning, Info, Destructive) theme extension.
 @immutable
@@ -129,8 +129,12 @@ class AppGradients extends ThemeExtension<AppGradients> {
   ) {
     if (other is! AppGradients) return this;
     return AppGradients(
-      primaryGradient: LinearGradient.lerp(primaryGradient, other.primaryGradient, t) ?? primaryGradient,
-      secondaryGradient: LinearGradient.lerp(secondaryGradient, other.secondaryGradient, t) ?? secondaryGradient,
+      primaryGradient:
+          LinearGradient.lerp(primaryGradient, other.primaryGradient, t) ??
+          primaryGradient,
+      secondaryGradient:
+          LinearGradient.lerp(secondaryGradient, other.secondaryGradient, t) ??
+          secondaryGradient,
     );
   }
 }
@@ -150,49 +154,25 @@ class AppShadows extends ThemeExtension<AppShadows> {
 
   static const light = AppShadows(
     small: [
-      BoxShadow(
-        color: Color(0x0F000000),
-        blurRadius: 4,
-        offset: Offset(0, 2),
-      ),
+      BoxShadow(color: Color(0x0F000000), blurRadius: 4, offset: Offset(0, 2)),
     ],
     medium: [
-      BoxShadow(
-        color: Color(0x14000000),
-        blurRadius: 10,
-        offset: Offset(0, 4),
-      ),
+      BoxShadow(color: Color(0x14000000), blurRadius: 10, offset: Offset(0, 4)),
     ],
     large: [
-      BoxShadow(
-        color: Color(0x1F000000),
-        blurRadius: 20,
-        offset: Offset(0, 8),
-      ),
+      BoxShadow(color: Color(0x1F000000), blurRadius: 20, offset: Offset(0, 8)),
     ],
   );
 
   static const dark = AppShadows(
     small: [
-      BoxShadow(
-        color: Color(0x33000000),
-        blurRadius: 4,
-        offset: Offset(0, 2),
-      ),
+      BoxShadow(color: Color(0x33000000), blurRadius: 4, offset: Offset(0, 2)),
     ],
     medium: [
-      BoxShadow(
-        color: Color(0x4D000000),
-        blurRadius: 10,
-        offset: Offset(0, 4),
-      ),
+      BoxShadow(color: Color(0x4D000000), blurRadius: 10, offset: Offset(0, 4)),
     ],
     large: [
-      BoxShadow(
-        color: Color(0x66000000),
-        blurRadius: 20,
-        offset: Offset(0, 8),
-      ),
+      BoxShadow(color: Color(0x66000000), blurRadius: 20, offset: Offset(0, 8)),
     ],
   );
 

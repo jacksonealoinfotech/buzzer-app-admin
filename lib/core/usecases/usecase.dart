@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base_template/core/result/result.dart';
+import 'package:buzzer_app_admin/core/result/result.dart';
 
 /// Base contract for asynchronous single-execution Clean Architecture use cases.
 ///

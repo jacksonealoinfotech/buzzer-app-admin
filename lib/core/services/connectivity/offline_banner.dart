@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_base_template/core/services/connectivity/connectivity_cubit.dart';
+import 'package:buzzer_app_admin/core/services/connectivity/connectivity_cubit.dart';
 
 /// Animated offline banner sliding into view at the top of the screen when device loses internet.
 class OfflineBanner extends StatelessWidget {
@@ -32,7 +32,11 @@ class OfflineBanner extends StatelessWidget {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.wifi_off_rounded, size: 16, color: Colors.white),
+                        Icon(
+                          Icons.wifi_off_rounded,
+                          size: 16,
+                          color: Colors.white,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'No Internet Connection • Offline Mode Active',

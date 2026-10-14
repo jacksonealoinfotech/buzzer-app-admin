@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/router/app_routes.dart';
-import 'package:flutter_base_template/core/router/router_observer.dart';
-import 'package:flutter_base_template/core/router/router_refresh_stream.dart';
-import 'package:flutter_base_template/core/security/redacting_logger.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
-import 'package:flutter_base_template/core/services/analytics/analytics_service.dart';
-import 'package:flutter_base_template/core/widgets/feedback/messenger_service.dart';
-import 'package:flutter_base_template/core/widgets/views/not_found_screen.dart';
+import 'package:buzzer_app_admin/core/router/app_routes.dart';
+import 'package:buzzer_app_admin/core/router/router_observer.dart';
+import 'package:buzzer_app_admin/core/router/router_refresh_stream.dart';
+import 'package:buzzer_app_admin/core/security/redacting_logger.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/services/analytics/analytics_service.dart';
+import 'package:buzzer_app_admin/core/widgets/feedback/messenger_service.dart';
+import 'package:buzzer_app_admin/core/widgets/views/not_found_screen.dart';
 
 /// Factory creating configured [GoRouter] with typed routes and authentication guards.
 GoRouter createAppRouter({
@@ -19,13 +19,12 @@ GoRouter createAppRouter({
     navigatorKey: MessengerService.rootNavigatorKey,
     initialLocation: '/',
     routes: $appRoutes,
-    refreshListenable: GoRouterRefreshStream(tokenManager.isAuthenticatedStream),
-    observers: [
-      AppRouterObserver(logger: logger, analytics: analytics),
-    ],
-    errorBuilder: (context, state) => NotFoundScreen(
-      errorMessage: state.error?.message,
+    refreshListenable: GoRouterRefreshStream(
+      tokenManager.isAuthenticatedStream,
     ),
+    observers: [AppRouterObserver(logger: logger, analytics: analytics)],
+    errorBuilder: (context, state) =>
+        NotFoundScreen(errorMessage: state.error?.message),
     redirect: (BuildContext context, GoRouterState state) {
       // Auth Guard Redirect:
       // In this template, public demonstration routes are allowed.

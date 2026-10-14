@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/responsive/breakpoints.dart';
+import 'package:buzzer_app_admin/core/responsive/breakpoints.dart';
 
 /// Performance-optimized responsive helpers on [BuildContext] using targeted
 /// `MediaQuery.sizeOf`, `paddingOf`, and `viewInsetsOf` to eliminate unnecessary rebuilds.

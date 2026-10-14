@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 /// Smooth ticker counter with slide transitions.
 class AnimatedCounter extends StatelessWidget {
@@ -27,11 +27,7 @@ class AnimatedCounter extends StatelessWidget {
           child: FadeTransition(opacity: animation, child: child),
         );
       },
-      child: Text(
-        '$count',
-        key: ValueKey<int>(count),
-        style: style,
-      ),
+      child: Text('$count', key: ValueKey<int>(count), style: style),
     );
   }
 }

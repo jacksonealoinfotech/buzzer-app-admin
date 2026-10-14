@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/responsive/app_sizes.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/theme/theme_context_extensions.dart';
+import 'package:buzzer_app_admin/core/responsive/app_sizes.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/theme/theme_context_extensions.dart';
 
 /// User profile avatar with initials fallback.
 class AppAvatar extends StatelessWidget {
@@ -99,10 +99,7 @@ class SectionHeader extends StatelessWidget {
             ),
           ),
           if (actionText != null && onAction != null)
-            TextButton(
-              onPressed: onAction,
-              child: Text(actionText!),
-            ),
+            TextButton(onPressed: onAction, child: Text(actionText!)),
         ],
       ),
     );
@@ -131,8 +128,8 @@ class RatingBar extends StatelessWidget {
       children: List.generate(maxRating, (index) {
         final icon = index < rating
             ? (index + 0.5 <= rating
-                ? Icons.star_rounded
-                : Icons.star_half_rounded)
+                  ? Icons.star_rounded
+                  : Icons.star_half_rounded)
             : Icons.star_outline_rounded;
         return Icon(icon, size: starSize, color: color);
       }),

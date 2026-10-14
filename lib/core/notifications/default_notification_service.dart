@@ -1,14 +1,14 @@
-import 'package:flutter_base_template/core/notifications/firebase_messaging_service.dart';
-import 'package:flutter_base_template/core/notifications/local_notification_service.dart';
-import 'package:flutter_base_template/core/notifications/notification_service.dart';
+import 'package:buzzer_app_admin/core/notifications/firebase_messaging_service.dart';
+import 'package:buzzer_app_admin/core/notifications/local_notification_service.dart';
+import 'package:buzzer_app_admin/core/notifications/notification_service.dart';
 
 /// Default facade implementation orchestrating local notifications and remote FCM push.
 class DefaultNotificationService implements NotificationService {
   DefaultNotificationService({
     required LocalNotificationService localNotifications,
     required FirebaseMessagingService firebaseMessaging,
-  })  : _local = localNotifications,
-        _fcm = firebaseMessaging;
+  }) : _local = localNotifications,
+       _fcm = firebaseMessaging;
 
   final LocalNotificationService _local;
   final FirebaseMessagingService _fcm;
@@ -58,5 +58,6 @@ class DefaultNotificationService implements NotificationService {
   Future<void> subscribeToTopic(String topic) => _fcm.subscribeToTopic(topic);
 
   @override
-  Future<void> unsubscribeFromTopic(String topic) => _fcm.unsubscribeFromTopic(topic);
+  Future<void> unsubscribeFromTopic(String topic) =>
+      _fcm.unsubscribeFromTopic(topic);
 }

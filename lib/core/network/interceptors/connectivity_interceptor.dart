@@ -1,11 +1,11 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_base_template/core/error/app_exception.dart';
+import 'package:buzzer_app_admin/core/error/app_exception.dart';
 
 /// Pre-flight interceptor verifying device network interface is active before firing HTTP calls.
 class ConnectivityInterceptor extends Interceptor {
   ConnectivityInterceptor({required Connectivity connectivity})
-      : _connectivity = connectivity;
+    : _connectivity = connectivity;
 
   final Connectivity _connectivity;
 
@@ -15,7 +15,8 @@ class ConnectivityInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final connectivityResult = await _connectivity.checkConnectivity();
-    final isOffline = connectivityResult.contains(ConnectivityResult.none) ||
+    final isOffline =
+        connectivityResult.contains(ConnectivityResult.none) ||
         connectivityResult.isEmpty;
 
     if (isOffline) {

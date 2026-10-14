@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/responsive/adaptive_scaffold.dart';
-import 'package:flutter_base_template/core/security/security_check_screen.dart';
-import 'package:flutter_base_template/core/widgets/demo/explore_screen.dart';
-import 'package:flutter_base_template/core/widgets/demo/login_screen.dart';
-import 'package:flutter_base_template/core/widgets/demo/settings_screen.dart';
-import 'package:flutter_base_template/core/widgets/demo/showcase_screen.dart';
+import 'package:buzzer_app_admin/core/responsive/adaptive_scaffold.dart';
+import 'package:buzzer_app_admin/core/security/security_check_screen.dart';
+import 'package:buzzer_app_admin/core/widgets/demo/explore_screen.dart';
+import 'package:buzzer_app_admin/core/widgets/demo/login_screen.dart';
+import 'package:buzzer_app_admin/core/widgets/demo/settings_screen.dart';
+import 'package:buzzer_app_admin/core/widgets/demo/showcase_screen.dart';
 
 part 'app_routes.g.dart';
 
@@ -14,7 +14,8 @@ class LoginRoute extends GoRouteData with $LoginRoute {
   const LoginRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const LoginScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const LoginScreen();
 }
 
 @TypedGoRoute<SecurityCheckRoute>(path: '/security-check')
@@ -22,15 +23,14 @@ class SecurityCheckRoute extends GoRouteData with $SecurityCheckRoute {
   const SecurityCheckRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const SecurityCheckScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SecurityCheckScreen();
 }
 
 @TypedStatefulShellRoute<AppShellRouteData>(
   branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
     TypedStatefulShellBranch<HomeBranchData>(
-      routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<HomeRoute>(path: '/'),
-      ],
+      routes: <TypedRoute<RouteData>>[TypedGoRoute<HomeRoute>(path: '/')],
     ),
     TypedStatefulShellBranch<ExploreBranchData>(
       routes: <TypedRoute<RouteData>>[
@@ -99,19 +99,22 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   const HomeRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const ShowcaseScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ShowcaseScreen();
 }
 
 class ExploreRoute extends GoRouteData with $ExploreRoute {
   const ExploreRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const ExploreScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ExploreScreen();
 }
 
 class SettingsRoute extends GoRouteData with $SettingsRoute {
   const SettingsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const SettingsScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SettingsScreen();
 }

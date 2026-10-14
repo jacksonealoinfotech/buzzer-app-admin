@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_base_template/core/database/tables/cached_items_table.dart';
+import 'package:buzzer_app_admin/core/database/tables/cached_items_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// DAO providing queries and change streams for [CachedItemsTable].

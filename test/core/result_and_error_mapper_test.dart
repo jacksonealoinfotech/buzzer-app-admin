@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_base_template/core/error/app_exception.dart';
-import 'package:flutter_base_template/core/error/error_mapper.dart';
-import 'package:flutter_base_template/core/error/failure.dart';
-import 'package:flutter_base_template/core/result/result.dart';
+import 'package:buzzer_app_admin/core/error/app_exception.dart';
+import 'package:buzzer_app_admin/core/error/error_mapper.dart';
+import 'package:buzzer_app_admin/core/error/failure.dart';
+import 'package:buzzer_app_admin/core/result/result.dart';
 
 void main() {
   group('Result<T> Sealed Hierarchy Tests', () {
@@ -41,11 +41,14 @@ void main() {
       expect(folded, equals('Handled: Connection dropped'));
     });
 
-    test('safeCall wraps successful async operation without throwing', () async {
-      final result = await safeCall(() async => 'hello world');
-      expect(result, isA<Success<String>>());
-      expect((result as Success<String>).data, equals('hello world'));
-    });
+    test(
+      'safeCall wraps successful async operation without throwing',
+      () async {
+        final result = await safeCall(() async => 'hello world');
+        expect(result, isA<Success<String>>());
+        expect((result as Success<String>).data, equals('hello world'));
+      },
+    );
 
     test('safeCall captures exceptions and returns FailureResult', () async {
       final result = await safeCall<String>(() async {

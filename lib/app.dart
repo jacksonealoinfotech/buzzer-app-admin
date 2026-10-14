@@ -2,20 +2,20 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/di/injection.dart';
-import 'package:flutter_base_template/core/localization/generated/app_localizations.dart';
-import 'package:flutter_base_template/core/localization/locale_cubit.dart';
-import 'package:flutter_base_template/core/router/app_router.dart';
-import 'package:flutter_base_template/core/security/redacting_logger.dart';
-import 'package:flutter_base_template/core/security/secure_screen.dart';
-import 'package:flutter_base_template/core/security/session_cubit.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
-import 'package:flutter_base_template/core/services/analytics/analytics_service.dart';
-import 'package:flutter_base_template/core/services/connectivity/connectivity_cubit.dart';
-import 'package:flutter_base_template/core/services/connectivity/offline_banner.dart';
-import 'package:flutter_base_template/core/theme/app_theme.dart';
-import 'package:flutter_base_template/core/theme/theme_cubit.dart';
-import 'package:flutter_base_template/core/widgets/feedback/messenger_service.dart';
+import 'package:buzzer_app_admin/core/di/injection.dart';
+import 'package:buzzer_app_admin/core/localization/generated/app_localizations.dart';
+import 'package:buzzer_app_admin/core/localization/locale_cubit.dart';
+import 'package:buzzer_app_admin/core/router/app_router.dart';
+import 'package:buzzer_app_admin/core/security/redacting_logger.dart';
+import 'package:buzzer_app_admin/core/security/secure_screen.dart';
+import 'package:buzzer_app_admin/core/security/session_cubit.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/services/analytics/analytics_service.dart';
+import 'package:buzzer_app_admin/core/services/connectivity/connectivity_cubit.dart';
+import 'package:buzzer_app_admin/core/services/connectivity/offline_banner.dart';
+import 'package:buzzer_app_admin/core/theme/app_theme.dart';
+import 'package:buzzer_app_admin/core/theme/theme_cubit.dart';
+import 'package:buzzer_app_admin/core/widgets/feedback/messenger_service.dart';
 
 /// Root application widget configuring global providers, router, theme, and localization.
 class App extends StatefulWidget {
@@ -42,21 +42,13 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ThemeCubit>(
-          create: (_) => ThemeCubit(),
-        ),
-        BlocProvider<LocaleCubit>(
-          create: (_) => LocaleCubit(),
-        ),
+        BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+        BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
         BlocProvider<ConnectivityCubit>(
-          create: (_) => ConnectivityCubit(
-            connectivity: getIt<Connectivity>(),
-          ),
+          create: (_) => ConnectivityCubit(connectivity: getIt<Connectivity>()),
         ),
         BlocProvider<SessionCubit>(
-          create: (_) => SessionCubit(
-            tokenManager: getIt<TokenManager>(),
-          ),
+          create: (_) => SessionCubit(tokenManager: getIt<TokenManager>()),
         ),
       ],
       child: Builder(
@@ -83,9 +75,7 @@ class _AppState extends State<App> {
             // Global Decorators (Offline Banner & App-Switcher Privacy Screen)
             builder: (context, child) {
               return SecureScreen(
-                child: OfflineBanner(
-                  child: child ?? const SizedBox.shrink(),
-                ),
+                child: OfflineBanner(child: child ?? const SizedBox.shrink()),
               );
             },
           );

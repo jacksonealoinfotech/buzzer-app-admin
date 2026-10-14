@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:flutter_base_template/core/di/injection.config.dart';
+import 'package:buzzer_app_admin/core/di/injection.config.dart';
 
 /// Global service locator instance.
 final GetIt getIt = GetIt.instance;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/error/failure.dart';
-import 'package:flutter_base_template/core/result/result.dart';
-import 'package:flutter_base_template/core/widgets/views/state_views.dart';
+import 'package:buzzer_app_admin/core/error/failure.dart';
+import 'package:buzzer_app_admin/core/result/result.dart';
+import 'package:buzzer_app_admin/core/widgets/views/state_views.dart';
 
 /// Generic widget rendering async states: initial, loading, empty, error, and success.
 class AsyncStateView<T> extends StatelessWidget {
@@ -58,19 +58,17 @@ class AsyncStateView<T> extends StatelessWidget {
 
     return switch (result!) {
       Success(:final data) => () {
-          if (isEmptyPredicate != null && isEmptyPredicate!(data)) {
-            return emptyBuilder?.call(context) ?? const EmptyView();
-          }
-          return dataBuilder(context, data);
-        }(),
-      FailureResult(:final failure) => errorBuilder != null
-          ? errorBuilder!(context, failure)
-          : failure is NetworkFailure
-              ? NoInternetView(onRetry: onRetry)
-              : ErrorView(
-                  message: failure.message,
-                  onRetry: onRetry,
-                ),
+        if (isEmptyPredicate != null && isEmptyPredicate!(data)) {
+          return emptyBuilder?.call(context) ?? const EmptyView();
+        }
+        return dataBuilder(context, data);
+      }(),
+      FailureResult(:final failure) =>
+        errorBuilder != null
+            ? errorBuilder!(context, failure)
+            : failure is NetworkFailure
+            ? NoInternetView(onRetry: onRetry)
+            : ErrorView(message: failure.message, onRetry: onRetry),
     };
   }
 }

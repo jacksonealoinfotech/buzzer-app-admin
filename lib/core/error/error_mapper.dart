@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_base_template/core/error/app_exception.dart';
-import 'package:flutter_base_template/core/error/failure.dart';
+import 'package:buzzer_app_admin/core/error/app_exception.dart';
+import 'package:buzzer_app_admin/core/error/failure.dart';
 
 /// Centralized mapper transforming network exceptions ([DioException]), infrastructure
 /// exceptions ([AppException]), and arbitrary objects into domain-level [Failure]s.
@@ -43,49 +43,55 @@ abstract final class ErrorMapper {
 
         return switch (statusCode) {
           400 => ValidationException(
-              message: serverMessage ?? 'Bad request. Please verify your input.',
-              fieldErrors: _extractFieldErrors(responseData),
-              cause: dioException,
-            ),
+            message: serverMessage ?? 'Bad request. Please verify your input.',
+            fieldErrors: _extractFieldErrors(responseData),
+            cause: dioException,
+          ),
           401 => UnauthorizedException(
-              message: serverMessage ?? 'Authentication token is invalid or expired.',
-              cause: dioException,
-            ),
+            message:
+                serverMessage ?? 'Authentication token is invalid or expired.',
+            cause: dioException,
+          ),
           403 => ForbiddenException(
-              message: serverMessage ?? 'Access to this resource is forbidden.',
-              cause: dioException,
-            ),
+            message: serverMessage ?? 'Access to this resource is forbidden.',
+            cause: dioException,
+          ),
           404 => NotFoundException(
-              message: serverMessage ?? 'Requested endpoint or resource was not found.',
-              cause: dioException,
-            ),
+            message:
+                serverMessage ??
+                'Requested endpoint or resource was not found.',
+            cause: dioException,
+          ),
           408 => TimeoutException(
-              message: serverMessage ?? 'Request timed out on the server.',
-              cause: dioException,
-            ),
+            message: serverMessage ?? 'Request timed out on the server.',
+            cause: dioException,
+          ),
           409 => ValidationException(
-              message: serverMessage ?? 'Conflict: resource state conflict occurred.',
-              cause: dioException,
-            ),
+            message:
+                serverMessage ?? 'Conflict: resource state conflict occurred.',
+            cause: dioException,
+          ),
           422 => ValidationException(
-              message: serverMessage ?? 'Unprocessable entity: semantic validation failed.',
-              fieldErrors: _extractFieldErrors(responseData),
-              cause: dioException,
-            ),
+            message:
+                serverMessage ??
+                'Unprocessable entity: semantic validation failed.',
+            fieldErrors: _extractFieldErrors(responseData),
+            cause: dioException,
+          ),
           429 => ValidationException(
-              message: serverMessage ?? 'Too many requests. Please slow down.',
-              cause: dioException,
-            ),
+            message: serverMessage ?? 'Too many requests. Please slow down.',
+            cause: dioException,
+          ),
           >= 500 && < 600 => ServerException(
-              message: serverMessage ?? 'Internal server error occurred.',
-              statusCode: statusCode,
-              cause: dioException,
-            ),
+            message: serverMessage ?? 'Internal server error occurred.',
+            statusCode: statusCode,
+            cause: dioException,
+          ),
           _ => ServerException(
-              message: serverMessage ?? 'Unexpected HTTP status: $statusCode',
-              statusCode: statusCode,
-              cause: dioException,
-            ),
+            message: serverMessage ?? 'Unexpected HTTP status: $statusCode',
+            statusCode: statusCode,
+            cause: dioException,
+          ),
         };
 
       case DioExceptionType.unknown:
@@ -109,22 +115,35 @@ abstract final class ErrorMapper {
         ForbiddenFailure(message: message, code: code, cause: cause),
       NotFoundException(:final message, :final code, :final cause) =>
         NotFoundFailure(message: message, code: code, cause: cause),
-      ValidationException(:final message, :final code, :final fieldErrors, :final cause) =>
+      ValidationException(
+        :final message,
+        :final code,
+        :final fieldErrors,
+        :final cause,
+      ) =>
         ValidationFailure(
           message: message,
           code: code,
           fieldErrors: fieldErrors,
           cause: cause,
         ),
-      ServerException(:final message, :final code, :final statusCode, :final cause) =>
+      ServerException(
+        :final message,
+        :final code,
+        :final statusCode,
+        :final cause,
+      ) =>
         ServerFailure(
           message: message,
           code: code,
           statusCode: statusCode,
           cause: cause,
         ),
-      CacheException(:final message, :final code, :final cause) =>
-        CacheFailure(message: message, code: code, cause: cause),
+      CacheException(:final message, :final code, :final cause) => CacheFailure(
+        message: message,
+        code: code,
+        cause: cause,
+      ),
       DatabaseException(:final message, :final code, :final cause) =>
         DatabaseFailure(message: message, code: code, cause: cause),
       ParsingException(:final message, :final code, :final cause) =>

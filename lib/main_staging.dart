@@ -1,10 +1,7 @@
-import 'package:flutter_base_template/app.dart';
-import 'package:flutter_base_template/bootstrap.dart';
-import 'package:flutter_base_template/core/config/flavor.dart';
+import 'package:buzzer_app_admin/app.dart';
+import 'package:buzzer_app_admin/bootstrap.dart';
+import 'package:buzzer_app_admin/core/config/flavor.dart';
 
 void main() {
-  bootstrap(
-    flavor: Flavor.staging,
-    builder: () => const App(),
-  );
+  bootstrap(flavor: Flavor.staging, builder: () => const App());
 }

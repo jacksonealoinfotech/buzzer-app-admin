@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:flutter_base_template/core/constants/storage_keys.dart';
-import 'package:flutter_base_template/core/security/token_storage.dart';
+
+import 'package:buzzer_app_admin/core/constants/storage_keys.dart';
+import 'package:buzzer_app_admin/core/security/token_storage.dart';
 
 // TODO: Uncomment when `flutter_secure_storage` package is enabled in pubspec.yaml:
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';

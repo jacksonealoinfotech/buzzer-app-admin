@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 /// Supported custom page transitions for [GoRoute] builder methods.
 enum AppTransitionType {
@@ -35,72 +35,66 @@ abstract final class PageTransitions {
 
         return switch (transitionType) {
           AppTransitionType.slideFromBottom => SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0.0, 1.0),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOutCubic,
-                ),
-              ),
-              child: child,
-            ),
-          AppTransitionType.slideFromRight => SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1.0, 0.0),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOutCubic,
-                ),
-              ),
-              child: child,
-            ),
-          AppTransitionType.slideFromLeft => SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(-1.0, 0.0),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOutCubic,
-                ),
-              ),
-              child: child,
-            ),
-          AppTransitionType.fade => FadeTransition(
-              opacity: CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeInOut,
-              ),
-              child: child,
-            ),
-          AppTransitionType.scale => ScaleTransition(
-              scale: Tween<double>(begin: 0.9, end: 1.0).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOutCubic,
-                ),
-              ),
-              child: FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-            ),
-          AppTransitionType.fadeThrough => FadeTransition(
-              opacity: animation,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.96, end: 1.0).animate(
+            position:
+                Tween<Offset>(
+                  begin: const Offset(0.0, 1.0),
+                  end: Offset.zero,
+                ).animate(
                   CurvedAnimation(
                     parent: animation,
                     curve: Curves.easeOutCubic,
                   ),
                 ),
-                child: child,
-              ),
+            child: child,
+          ),
+          AppTransitionType.slideFromRight => SlideTransition(
+            position:
+                Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+            child: child,
+          ),
+          AppTransitionType.slideFromLeft => SlideTransition(
+            position:
+                Tween<Offset>(
+                  begin: const Offset(-1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+            child: child,
+          ),
+          AppTransitionType.fade => FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
             ),
+            child: child,
+          ),
+          AppTransitionType.scale => ScaleTransition(
+            scale: Tween<double>(begin: 0.9, end: 1.0).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+            ),
+            child: FadeTransition(opacity: animation, child: child),
+          ),
+          AppTransitionType.fadeThrough => FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 0.96, end: 1.0).animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+              ),
+              child: child,
+            ),
+          ),
           AppTransitionType.none => child,
         };
       },

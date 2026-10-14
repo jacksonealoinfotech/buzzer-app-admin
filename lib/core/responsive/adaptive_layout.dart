@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/responsive/breakpoints.dart';
+import 'package:buzzer_app_admin/core/responsive/breakpoints.dart';
 
 /// Renders different UI trees depending on the active [WindowSizeClass].
 class AdaptiveLayout extends StatelessWidget {

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 /// Supported atomic animation types.
 enum AnimationType {
@@ -92,53 +93,53 @@ class _AppAnimateState extends State<AppAnimate>
         final value = _animation.value;
 
         return switch (widget.type) {
-          AnimationType.fadeIn => Opacity(
-              opacity: value,
-              child: child,
-            ),
+          AnimationType.fadeIn => Opacity(opacity: value, child: child),
           AnimationType.slideUp => Transform.translate(
-              offset: Offset(0, 30 * (1.0 - value)),
-              child: Opacity(opacity: value, child: child),
-            ),
+            offset: Offset(0, 30 * (1.0 - value)),
+            child: Opacity(opacity: value, child: child),
+          ),
           AnimationType.slideDown => Transform.translate(
-              offset: Offset(0, -30 * (1.0 - value)),
-              child: Opacity(opacity: value, child: child),
-            ),
+            offset: Offset(0, -30 * (1.0 - value)),
+            child: Opacity(opacity: value, child: child),
+          ),
           AnimationType.slideLeft => Transform.translate(
-              offset: Offset(30 * (1.0 - value), 0),
-              child: Opacity(opacity: value, child: child),
-            ),
+            offset: Offset(30 * (1.0 - value), 0),
+            child: Opacity(opacity: value, child: child),
+          ),
           AnimationType.slideRight => Transform.translate(
-              offset: Offset(-30 * (1.0 - value), 0),
-              child: Opacity(opacity: value, child: child),
-            ),
+            offset: Offset(-30 * (1.0 - value), 0),
+            child: Opacity(opacity: value, child: child),
+          ),
           AnimationType.scale => Transform.scale(
-              scale: 0.85 + (0.15 * value),
-              child: Opacity(opacity: value, child: child),
-            ),
+            scale: 0.85 + (0.15 * value),
+            child: Opacity(opacity: value, child: child),
+          ),
           AnimationType.bounce => Transform.scale(
-              scale: 0.5 + (0.5 * value),
-              child: child,
-            ),
+            scale: 0.5 + (0.5 * value),
+            child: child,
+          ),
           AnimationType.pulse => Transform.scale(
-              scale: 0.95 + (0.05 * value),
-              child: child,
-            ),
+            scale: 0.95 + (0.05 * value),
+            child: child,
+          ),
           AnimationType.shake => Transform.translate(
-              offset: Offset(10 * (1.0 - value) * ((value * 10) % 2 == 0 ? 1 : -1), 0),
-              child: child,
+            offset: Offset(
+              10 * (1.0 - value) * ((value * 10) % 2 == 0 ? 1 : -1),
+              0,
             ),
+            child: child,
+          ),
           AnimationType.rotate => Transform.rotate(
-              angle: (1.0 - value) * 0.2,
-              child: Opacity(opacity: value, child: child),
-            ),
+            angle: (1.0 - value) * 0.2,
+            child: Opacity(opacity: value, child: child),
+          ),
           AnimationType.blurIn => ImageFiltered(
-              imageFilter: ImageFilter.blur(
-                sigmaX: 10 * (1.0 - value),
-                sigmaY: 10 * (1.0 - value),
-              ),
-              child: Opacity(opacity: value, child: child),
+            imageFilter: ImageFilter.blur(
+              sigmaX: 10 * (1.0 - value),
+              sigmaY: 10 * (1.0 - value),
             ),
+            child: Opacity(opacity: value, child: child),
+          ),
         };
       },
       child: widget.child,

@@ -1,7 +1,8 @@
 import 'dart:isolate';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_base_template/core/config/env.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/config/env.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
 
 /// Production-ready wrapper around [Dio] providing type-safe HTTP primitives,
 /// background isolate JSON parsing for high-throughput payloads, and cancellation tokens.

@@ -1,6 +1,7 @@
 import 'dart:math';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_base_template/core/error/app_exception.dart';
+import 'package:buzzer_app_admin/core/error/app_exception.dart';
 
 /// Network security enforcement interceptor:
 /// 1. Enforces HTTPS only (strictly rejects cleartext HTTP downgrades).

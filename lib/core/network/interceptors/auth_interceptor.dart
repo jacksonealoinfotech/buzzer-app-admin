@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_base_template/core/constants/api_endpoints.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/constants/api_endpoints.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
 
 /// Interceptor managing OAuth2 bearer token injection and single-flight refresh synchronization.
 class AuthInterceptor extends Interceptor {
@@ -9,9 +10,9 @@ class AuthInterceptor extends Interceptor {
     required TokenManager tokenManager,
     required Dio dio,
     required Future<void> Function() onForceLogout,
-  })  : _tokenManager = tokenManager,
-        _dio = dio,
-        _onForceLogout = onForceLogout;
+  }) : _tokenManager = tokenManager,
+       _dio = dio,
+       _onForceLogout = onForceLogout;
 
   final TokenManager _tokenManager;
   final Dio _dio;
@@ -23,7 +24,8 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     // Skip token injection on public authentication endpoints
-    final isAuthEndpoint = options.path.contains(ApiEndpoints.login) ||
+    final isAuthEndpoint =
+        options.path.contains(ApiEndpoints.login) ||
         options.path.contains(ApiEndpoints.refreshToken);
 
     if (!isAuthEndpoint) {
@@ -45,7 +47,8 @@ class AuthInterceptor extends Interceptor {
     final requestOptions = err.requestOptions;
 
     // Intercept HTTP 401 Unauthorized errors (excluding auth endpoints themselves)
-    final isAuthEndpoint = requestOptions.path.contains(ApiEndpoints.login) ||
+    final isAuthEndpoint =
+        requestOptions.path.contains(ApiEndpoints.login) ||
         requestOptions.path.contains(ApiEndpoints.refreshToken);
 
     if (response?.statusCode == 401 && !isAuthEndpoint) {

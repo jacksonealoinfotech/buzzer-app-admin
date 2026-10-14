@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_base_template/core/security/redacting_logger.dart';
+import 'package:buzzer_app_admin/core/security/redacting_logger.dart';
 
 void main() {
   group('RedactingLogger PII Sanitization Tests', () {
     test('Redacts Bearer authorization tokens', () {
-      const input = 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xyz.123';
+      const input =
+          'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xyz.123';
       final redacted = RedactingLogger.redact(input);
       expect(redacted.contains('Bearer [REDACTED]'), isTrue);
       expect(redacted.contains('eyJhbGci'), isFalse);

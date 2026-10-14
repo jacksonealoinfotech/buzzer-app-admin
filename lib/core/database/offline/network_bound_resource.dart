@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_base_template/core/error/failure.dart';
-import 'package:flutter_base_template/core/result/result.dart';
+import 'package:buzzer_app_admin/core/error/failure.dart';
+import 'package:buzzer_app_admin/core/result/result.dart';
 
 /// Sealed state of a resource being loaded through offline-first synchronization.
 sealed class Resource<T> {

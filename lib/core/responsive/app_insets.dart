@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
 
 /// Standardized [EdgeInsets] padding presets.
 abstract final class AppInsets {

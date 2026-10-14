@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/responsive/app_sizes.dart';
-import 'package:flutter_base_template/core/theme/theme_context_extensions.dart';
-import 'package:flutter_base_template/core/widgets/animations/tap_scale_feedback.dart';
+import 'package:buzzer_app_admin/core/responsive/app_sizes.dart';
+import 'package:buzzer_app_admin/core/theme/theme_context_extensions.dart';
+import 'package:buzzer_app_admin/core/widgets/animations/tap_scale_feedback.dart';
 
 /// Supported button styling variants.
-enum ButtonVariant {
-  primary,
-  secondary,
-  outlined,
-  text,
-  tonal,
-  danger,
-}
+enum ButtonVariant { primary, secondary, outlined, text, tonal, danger }
 
 /// Production-grade accessible button component.
 ///
@@ -59,7 +52,9 @@ class AppButton extends StatelessWidget {
             height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2.2,
-              valueColor: AlwaysStoppedAnimation<Color>(_loadingSpinnerColor(colors)),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                _loadingSpinnerColor(colors),
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -78,49 +73,52 @@ class AppButton extends StatelessWidget {
 
     Widget button = switch (variant) {
       ButtonVariant.primary => FilledButton(
-          style: style,
-          onPressed: _isEnabled ? onPressed : null,
-          child: buttonChild,
-        ),
+        style: style,
+        onPressed: _isEnabled ? onPressed : null,
+        child: buttonChild,
+      ),
       ButtonVariant.secondary => ElevatedButton(
-          style: style,
-          onPressed: _isEnabled ? onPressed : null,
-          child: buttonChild,
-        ),
+        style: style,
+        onPressed: _isEnabled ? onPressed : null,
+        child: buttonChild,
+      ),
       ButtonVariant.outlined => OutlinedButton(
-          style: style,
-          onPressed: _isEnabled ? onPressed : null,
-          child: buttonChild,
-        ),
+        style: style,
+        onPressed: _isEnabled ? onPressed : null,
+        child: buttonChild,
+      ),
       ButtonVariant.text => TextButton(
-          style: style,
-          onPressed: _isEnabled ? onPressed : null,
-          child: buttonChild,
-        ),
+        style: style,
+        onPressed: _isEnabled ? onPressed : null,
+        child: buttonChild,
+      ),
       ButtonVariant.tonal => FilledButton.tonal(
-          style: style,
-          onPressed: _isEnabled ? onPressed : null,
-          child: buttonChild,
-        ),
+        style: style,
+        onPressed: _isEnabled ? onPressed : null,
+        child: buttonChild,
+      ),
       ButtonVariant.danger => FilledButton(
-          style: style.copyWith(
-            backgroundColor: WidgetStateProperty.resolveWith(
-              (states) => states.contains(WidgetState.disabled)
-                  ? colors.error.withValues(alpha: 0.38)
-                  : colors.error,
-            ),
-            foregroundColor: WidgetStateProperty.all(colors.onError),
+        style: style.copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.disabled)
+                ? colors.error.withValues(alpha: 0.38)
+                : colors.error,
           ),
-          onPressed: _isEnabled ? onPressed : null,
-          child: buttonChild,
+          foregroundColor: WidgetStateProperty.all(colors.onError),
         ),
+        onPressed: _isEnabled ? onPressed : null,
+        child: buttonChild,
+      ),
     };
 
     if (isFullWidth) {
       button = SizedBox(width: double.infinity, height: height, child: button);
     } else {
       button = ConstrainedBox(
-        constraints: BoxConstraints(minHeight: height, minWidth: AppSizes.minTouchTarget),
+        constraints: BoxConstraints(
+          minHeight: height,
+          minWidth: AppSizes.minTouchTarget,
+        ),
         child: button,
       );
     }
@@ -138,7 +136,9 @@ class AppButton extends StatelessWidget {
 
   ButtonStyle _buttonStyle(BuildContext context, ColorScheme colors) {
     return ButtonStyle(
-      minimumSize: WidgetStateProperty.all(Size(AppSizes.minTouchTarget, height)),
+      minimumSize: WidgetStateProperty.all(
+        Size(AppSizes.minTouchTarget, height),
+      ),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),

@@ -1,5 +1,5 @@
-import 'package:flutter_base_template/core/database/daos/items_dao.dart';
-import 'package:flutter_base_template/core/database/tables/cached_items_table.dart';
+import 'package:buzzer_app_admin/core/database/daos/items_dao.dart';
+import 'package:buzzer_app_admin/core/database/tables/cached_items_table.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart';
 
@@ -9,11 +9,11 @@ class AppDatabase {
 
   /// Creates an in-memory database using the provided sqflite-compatible factory.
   AppDatabase.forTesting(DatabaseFactory factory)
-      : this._(_openDatabase(factory, inMemoryDatabasePath));
+    : this._(_openDatabase(factory, inMemoryDatabasePath));
 
   AppDatabase._(Future<Database> database)
-      : _database = database,
-        itemsDao = ItemsDao(database);
+    : _database = database,
+      itemsDao = ItemsDao(database);
 
   static const int _schemaVersion = 1;
 
@@ -25,8 +25,8 @@ class AppDatabase {
     DatabaseFactory factory, [
     String? databasePath,
   ]) async {
-    final resolvedPath = databasePath ??
-        path.join(await getDatabasesPath(), 'app_database.db');
+    final resolvedPath =
+        databasePath ?? path.join(await getDatabasesPath(), 'app_database.db');
     return factory.openDatabase(
       resolvedPath,
       options: OpenDatabaseOptions(

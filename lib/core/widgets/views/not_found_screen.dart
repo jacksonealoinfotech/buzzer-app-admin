@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/theme/theme_context_extensions.dart';
-import 'package:flutter_base_template/core/widgets/buttons/app_button.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/theme/theme_context_extensions.dart';
+import 'package:buzzer_app_admin/core/widgets/buttons/app_button.dart';
 
 /// 404 Page Not Found screen rendered on unmatched deep links or route errors.
 class NotFoundScreen extends StatelessWidget {
@@ -27,7 +27,9 @@ class NotFoundScreen extends StatelessWidget {
               Gap.v16,
               Text(
                 '404 - Route Not Found',
-                style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               Gap.v8,

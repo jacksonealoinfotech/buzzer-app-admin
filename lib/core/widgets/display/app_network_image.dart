@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/widgets/animations/shimmer.dart';
+import 'package:buzzer_app_admin/core/widgets/animations/shimmer.dart';
 
 // TODO: Uncomment when `cached_network_image` package is enabled in pubspec.yaml:
 // import 'package:cached_network_image/cached_network_image.dart';
@@ -51,7 +51,8 @@ class AppNetworkImage extends StatelessWidget {
             borderRadius: borderRadius,
           );
         },
-        errorBuilder: (context, error, stackTrace) => _buildErrorWidget(context),
+        errorBuilder: (context, error, stackTrace) =>
+            _buildErrorWidget(context),
       ),
     );
   }

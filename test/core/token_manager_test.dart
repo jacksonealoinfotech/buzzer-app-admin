@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_base_template/core/constants/storage_keys.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
-import 'package:flutter_base_template/core/security/token_storage.dart';
+import 'package:buzzer_app_admin/core/constants/storage_keys.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/security/token_storage.dart';
 
 class MockTokenStorage implements TokenStorage {
   String? storedRefreshToken;
@@ -64,46 +64,55 @@ void main() {
 
       expect(tokenManager.getAccessToken(), equals('memory_access_token_123'));
       expect(tokenManager.isAuthenticated, isTrue);
-      expect(await tokenStorage.getRefreshToken(), equals('secure_refresh_token_456'));
-    });
-
-    test('Single-flight refresh prevents parallel duplicate refreshes', () async {
-      await tokenManager.saveTokens(
-        accessToken: 'expired_access',
-        refreshToken: 'valid_refresh',
+      expect(
+        await tokenStorage.getRefreshToken(),
+        equals('secure_refresh_token_456'),
       );
-
-      var refreshCallCount = 0;
-
-      Future<(String, String?)> mockRefreshCall(String refresh) async {
-        refreshCallCount++;
-        await Future<void>.delayed(const Duration(milliseconds: 50));
-        return ('new_access_token', 'new_rotated_refresh_token');
-      }
-
-      // Fire 3 simultaneous refresh operations
-      final results = await Future.wait([
-        tokenManager.singleFlightRefresh(
-          refreshCall: mockRefreshCall,
-          onRefreshFailed: () async {},
-        ),
-        tokenManager.singleFlightRefresh(
-          refreshCall: mockRefreshCall,
-          onRefreshFailed: () async {},
-        ),
-        tokenManager.singleFlightRefresh(
-          refreshCall: mockRefreshCall,
-          onRefreshFailed: () async {},
-        ),
-      ]);
-
-      // Exactly ONE network refresh call should have occurred
-      expect(refreshCallCount, equals(1));
-      expect(results[0], equals('new_access_token'));
-      expect(results[1], equals('new_access_token'));
-      expect(results[2], equals('new_access_token'));
-      expect(await tokenStorage.getRefreshToken(), equals('new_rotated_refresh_token'));
     });
+
+    test(
+      'Single-flight refresh prevents parallel duplicate refreshes',
+      () async {
+        await tokenManager.saveTokens(
+          accessToken: 'expired_access',
+          refreshToken: 'valid_refresh',
+        );
+
+        var refreshCallCount = 0;
+
+        Future<(String, String?)> mockRefreshCall(String refresh) async {
+          refreshCallCount++;
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+          return ('new_access_token', 'new_rotated_refresh_token');
+        }
+
+        // Fire 3 simultaneous refresh operations
+        final results = await Future.wait([
+          tokenManager.singleFlightRefresh(
+            refreshCall: mockRefreshCall,
+            onRefreshFailed: () async {},
+          ),
+          tokenManager.singleFlightRefresh(
+            refreshCall: mockRefreshCall,
+            onRefreshFailed: () async {},
+          ),
+          tokenManager.singleFlightRefresh(
+            refreshCall: mockRefreshCall,
+            onRefreshFailed: () async {},
+          ),
+        ]);
+
+        // Exactly ONE network refresh call should have occurred
+        expect(refreshCallCount, equals(1));
+        expect(results[0], equals('new_access_token'));
+        expect(results[1], equals('new_access_token'));
+        expect(results[2], equals('new_access_token'));
+        expect(
+          await tokenStorage.getRefreshToken(),
+          equals('new_rotated_refresh_token'),
+        );
+      },
+    );
 
     test('Clear tokens completely wipes memory and secure storage', () async {
       await tokenManager.saveTokens(

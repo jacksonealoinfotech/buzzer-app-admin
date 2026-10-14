@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_base_template/core/config/env.dart';
-import 'package:flutter_base_template/core/config/flavor.dart';
-import 'package:flutter_base_template/core/di/injection.dart';
-import 'package:flutter_base_template/core/localization/locale_cubit.dart';
-import 'package:flutter_base_template/core/theme/theme_cubit.dart';
-import 'package:flutter_base_template/core/widgets/buttons/app_button.dart';
-import 'package:flutter_base_template/core/widgets/demo/showcase_screen.dart';
+import 'package:buzzer_app_admin/core/config/env.dart';
+import 'package:buzzer_app_admin/core/config/flavor.dart';
+import 'package:buzzer_app_admin/core/di/injection.dart';
+import 'package:buzzer_app_admin/core/localization/locale_cubit.dart';
+import 'package:buzzer_app_admin/core/theme/theme_cubit.dart';
+import 'package:buzzer_app_admin/core/widgets/buttons/app_button.dart';
+import 'package:buzzer_app_admin/core/widgets/demo/showcase_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mocktail/mocktail.dart';
@@ -33,7 +33,9 @@ void main() {
     await resetDependencies();
   });
 
-  testWidgets('ShowcaseScreen renders cleanly with all components', (tester) async {
+  testWidgets('ShowcaseScreen renders cleanly with all components', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(1080, 2400);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -47,9 +49,7 @@ void main() {
           BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
           BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
         ],
-        child: const MaterialApp(
-          home: ShowcaseScreen(),
-        ),
+        child: const MaterialApp(home: ShowcaseScreen()),
       ),
     );
 

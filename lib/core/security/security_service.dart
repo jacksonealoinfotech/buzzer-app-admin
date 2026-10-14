@@ -1,5 +1,5 @@
-import 'package:flutter_base_template/core/security/secure_storage_service.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/security/secure_storage_service.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
 
 /// Central application security orchestrator providing system-wide wiping and compliance tools.
 final class SecurityService {
@@ -7,9 +7,9 @@ final class SecurityService {
     required TokenManager tokenManager,
     required SecureStorageService secureStorageService,
     Future<void> Function()? onDatabaseWipe,
-  })  : _tokenManager = tokenManager,
-        _secureStorageService = secureStorageService,
-        _onDatabaseWipe = onDatabaseWipe;
+  }) : _tokenManager = tokenManager,
+       _secureStorageService = secureStorageService,
+       _onDatabaseWipe = onDatabaseWipe;
 
   final TokenManager _tokenManager;
   final SecureStorageService _secureStorageService;

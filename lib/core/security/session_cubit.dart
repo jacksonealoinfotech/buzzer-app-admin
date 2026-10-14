@@ -1,18 +1,19 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_base_template/core/constants/app_durations.dart';
-import 'package:flutter_base_template/core/security/session_state.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/constants/app_durations.dart';
+import 'package:buzzer_app_admin/core/security/session_state.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
 
 /// Manages active session lifecycle, background auto-lock, and idle timeouts.
 class SessionCubit extends Cubit<SessionState> {
   SessionCubit({required TokenManager tokenManager})
-      : _tokenManager = tokenManager,
-        super(
-          tokenManager.isAuthenticated
-              ? SessionActive(lastActivity: DateTime.now())
-              : const SessionUnauthenticated(),
-        ) {
+    : _tokenManager = tokenManager,
+      super(
+        tokenManager.isAuthenticated
+            ? SessionActive(lastActivity: DateTime.now())
+            : const SessionUnauthenticated(),
+      ) {
     _authSubscription = _tokenManager.isAuthenticatedStream.listen((isAuth) {
       if (!isAuth) {
         emit(const SessionUnauthenticated());

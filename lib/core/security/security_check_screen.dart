@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/config/env.dart';
-import 'package:flutter_base_template/core/di/injection.dart';
-import 'package:flutter_base_template/core/security/device_integrity_service.dart';
-import 'package:flutter_base_template/core/security/secure_storage_service.dart';
-import 'package:flutter_base_template/core/security/token_manager.dart';
+import 'package:buzzer_app_admin/core/config/env.dart';
+import 'package:buzzer_app_admin/core/di/injection.dart';
+import 'package:buzzer_app_admin/core/security/device_integrity_service.dart';
+import 'package:buzzer_app_admin/core/security/secure_storage_service.dart';
+import 'package:buzzer_app_admin/core/security/token_manager.dart';
 
 /// Diagnostics screen displaying live OWASP MASVS security verification status.
 /// Intended for debug builds and developer QA reviews.
@@ -112,16 +112,20 @@ class _SecurityCheckScreenState extends State<SecurityCheckScreen> {
                   subtitle: kDebugMode
                       ? 'NOTICE: Active debugger connected (Normal for debug build)'
                       : 'PASS: No debugger attached in release',
-                  passed: !kDebugMode || _integrityReport?.isDebuggerAttached == true,
+                  passed:
+                      !kDebugMode ||
+                      _integrityReport?.isDebuggerAttached == true,
                 ),
                 _buildCheckItem(
                   title: 'HTTPS Cleartext Protection',
-                  subtitle: 'Enforced via SecurityInterceptor & Android Manifest',
+                  subtitle:
+                      'Enforced via SecurityInterceptor & Android Manifest',
                   passed: true,
                 ),
                 _buildCheckItem(
                   title: 'PII Redacting Logger',
-                  subtitle: 'Bearer tokens, emails, cards redacted before logging',
+                  subtitle:
+                      'Bearer tokens, emails, cards redacted before logging',
                   passed: true,
                 ),
               ],

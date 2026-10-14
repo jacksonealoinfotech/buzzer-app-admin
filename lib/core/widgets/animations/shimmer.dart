@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/theme/app_colors.dart';
-import 'package:flutter_base_template/core/theme/theme_context_extensions.dart';
+import 'package:buzzer_app_admin/core/theme/app_colors.dart';
+import 'package:buzzer_app_admin/core/theme/theme_context_extensions.dart';
 
 /// Shimmer skeleton loading effect without external package dependencies.
 ///
@@ -35,10 +35,7 @@ class AppShimmer extends StatefulWidget {
   }
 
   /// Factory creating circular skeleton placeholder (e.g. Avatars).
-  factory AppShimmer.circle({
-    required double size,
-    Key? key,
-  }) {
+  factory AppShimmer.circle({required double size, Key? key}) {
     return AppShimmer(
       key: key,
       child: Container(
@@ -85,9 +82,11 @@ class _AppShimmerState extends State<AppShimmer>
     }
 
     final isDark = context.isDark;
-    final base = widget.baseColor ??
+    final base =
+        widget.baseColor ??
         (isDark ? AppColors.shimmerDarkBase : AppColors.shimmerBase);
-    final highlight = widget.highlightColor ??
+    final highlight =
+        widget.highlightColor ??
         (isDark ? AppColors.shimmerDarkHighlight : AppColors.shimmerHighlight);
 
     return AnimatedBuilder(
@@ -101,7 +100,9 @@ class _AppShimmerState extends State<AppShimmer>
               end: Alignment.bottomRight,
               colors: [base, highlight, base],
               stops: const [0.0, 0.5, 1.0],
-              transform: _SlidingGradientTransform(slidePercent: _controller.value),
+              transform: _SlidingGradientTransform(
+                slidePercent: _controller.value,
+              ),
             ).createShader(bounds);
           },
           child: child,
@@ -119,6 +120,10 @@ class _SlidingGradientTransform extends GradientTransform {
 
   @override
   Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
-    return Matrix4.translationValues(bounds.width * (slidePercent * 2 - 1), 0, 0);
+    return Matrix4.translationValues(
+      bounds.width * (slidePercent * 2 - 1),
+      0,
+      0,
+    );
   }
 }

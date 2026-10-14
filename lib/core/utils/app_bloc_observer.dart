@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_base_template/core/security/redacting_logger.dart';
+import 'package:buzzer_app_admin/core/security/redacting_logger.dart';
 
 /// Global BlocObserver recording transitions, events, and errors through [RedactingLogger].
 class AppBlocObserver extends BlocObserver {

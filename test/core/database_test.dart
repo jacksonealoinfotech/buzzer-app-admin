@@ -1,5 +1,5 @@
-import 'package:flutter_base_template/core/database/app_database.dart';
-import 'package:flutter_base_template/core/database/tables/cached_items_table.dart';
+import 'package:buzzer_app_admin/core/database/app_database.dart';
+import 'package:buzzer_app_admin/core/database/tables/cached_items_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -44,10 +44,7 @@ void main() {
       );
 
       await database.itemsDao.insertOrUpdateItem(
-        CachedItemEntity(
-          id: 'reactive_1',
-          title: 'Stream Item',
-        ),
+        CachedItemEntity(id: 'reactive_1', title: 'Stream Item'),
       );
 
       await futureExpectation;

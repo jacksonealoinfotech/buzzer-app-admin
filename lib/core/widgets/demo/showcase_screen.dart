@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_base_template/core/error/app_exception.dart';
-import 'package:flutter_base_template/core/localization/locale_cubit.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/responsive/responsive_context.dart';
-import 'package:flutter_base_template/core/result/result.dart';
-import 'package:flutter_base_template/core/theme/theme_context_extensions.dart';
-import 'package:flutter_base_template/core/theme/theme_cubit.dart';
-import 'package:flutter_base_template/core/widgets/animations/app_animate.dart';
-import 'package:flutter_base_template/core/widgets/animations/shimmer.dart';
-import 'package:flutter_base_template/core/widgets/animations/staggered_animation.dart';
-import 'package:flutter_base_template/core/widgets/buttons/app_button.dart';
-import 'package:flutter_base_template/core/widgets/display/common_components.dart';
-import 'package:flutter_base_template/core/widgets/feedback/messenger_service.dart';
-import 'package:flutter_base_template/core/widgets/inputs/app_text_field.dart';
-import 'package:flutter_base_template/core/widgets/inputs/search_field.dart';
-import 'package:flutter_base_template/core/widgets/scaffold/app_scaffold.dart';
-import 'package:flutter_base_template/core/widgets/views/async_state_view.dart';
+import 'package:buzzer_app_admin/core/error/app_exception.dart';
+import 'package:buzzer_app_admin/core/localization/locale_cubit.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/responsive/responsive_context.dart';
+import 'package:buzzer_app_admin/core/result/result.dart';
+import 'package:buzzer_app_admin/core/theme/theme_context_extensions.dart';
+import 'package:buzzer_app_admin/core/theme/theme_cubit.dart';
+import 'package:buzzer_app_admin/core/widgets/animations/app_animate.dart';
+import 'package:buzzer_app_admin/core/widgets/animations/shimmer.dart';
+import 'package:buzzer_app_admin/core/widgets/animations/staggered_animation.dart';
+import 'package:buzzer_app_admin/core/widgets/buttons/app_button.dart';
+import 'package:buzzer_app_admin/core/widgets/display/common_components.dart';
+import 'package:buzzer_app_admin/core/widgets/feedback/messenger_service.dart';
+import 'package:buzzer_app_admin/core/widgets/inputs/app_text_field.dart';
+import 'package:buzzer_app_admin/core/widgets/inputs/search_field.dart';
+import 'package:buzzer_app_admin/core/widgets/scaffold/app_scaffold.dart';
+import 'package:buzzer_app_admin/core/widgets/views/async_state_view.dart';
 
 /// Interactive showcase screen verifying all core features:
 /// - M3 theme switching
@@ -46,7 +46,8 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
 
     final result = await safeCall<String>(() async {
       return switch (scenario) {
-        'success' => 'Production Clean Architecture template loaded successfully!',
+        'success' =>
+          'Production Clean Architecture template loaded successfully!',
         'network_error' => throw const NetworkException(),
         'unauthorized' => throw const UnauthorizedException(),
         'server_error' => throw const ServerException(statusCode: 500),
@@ -66,7 +67,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         case Success(:final data):
           MessengerService.showSuccess('Result: Success - $data');
         case FailureResult(:final failure):
-          MessengerService.showError('Result: ${failure.runtimeType} - ${failure.message}');
+          MessengerService.showError(
+            'Result: ${failure.runtimeType} - ${failure.message}',
+          );
       }
     }
   }
@@ -120,7 +123,8 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
           // 4. Buttons & Interactions
           const SectionHeader(
             title: 'Accessible Buttons (48dp Touch Targets)',
-            subtitle: 'Loading states, icon prefixes, tonal & semantic variants',
+            subtitle:
+                'Loading states, icon prefixes, tonal & semantic variants',
           ),
           _buildButtonsDemo(context),
           Gap.v24,
@@ -128,7 +132,8 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
           // 5. Inputs & Form Fields
           const SectionHeader(
             title: 'Form Inputs & Debounce',
-            subtitle: 'Material 3 styling with clear action and search debouncer',
+            subtitle:
+                'Material 3 styling with clear action and search debouncer',
           ),
           _buildInputsDemo(context),
           Gap.v24,
@@ -160,7 +165,11 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
           children: [
             Row(
               children: [
-                const Icon(Icons.verified_rounded, color: Colors.white, size: 28),
+                const Icon(
+                  Icons.verified_rounded,
+                  color: Colors.white,
+                  size: 28,
+                ),
                 const SizedBox(width: 10),
                 Text(
                   'Production-Grade Base Template',
@@ -174,7 +183,11 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
             Gap.v8,
             const Text(
               'Clean Architecture • Dart 3.x Sealed Classes • sqflite • Typed GoRouter • OWASP MASVS Hardened',
-              style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
             Gap.v16,
             Row(
@@ -226,7 +239,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                   ),
                   Text(
                     'Width: ${context.screenWidth.toStringAsFixed(0)}dp • Height: ${context.screenHeight.toStringAsFixed(0)}dp',
-                    style: context.text.bodySmall?.copyWith(color: colors.outline),
+                    style: context.text.bodySmall?.copyWith(
+                      color: colors.outline,
+                    ),
                   ),
                 ],
               ),
@@ -274,7 +289,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: context.colors.surfaceContainerHighest.withValues(alpha: 0.4),
+                color: context.colors.surfaceContainerHighest.withValues(
+                  alpha: 0.4,
+                ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: AsyncStateView<String>(
@@ -381,7 +398,10 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Shimmer Skeletons:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Shimmer Skeletons:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             Gap.v8,
             Row(
               children: [
@@ -400,7 +420,10 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
               ],
             ),
             Gap.v16,
-            const Text('Staggered Animated Items:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Staggered Animated Items:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             Gap.v8,
             ...List.generate(3, (index) {
               return StaggeredAnimation(

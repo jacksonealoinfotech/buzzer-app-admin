@@ -1,4 +1,4 @@
-package com.example.base.flutter_base_template
+package com.example.base.buzzer_app_admin
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/responsive/app_spacing.dart';
-import 'package:flutter_base_template/core/theme/theme_context_extensions.dart';
-import 'package:flutter_base_template/core/widgets/buttons/app_button.dart';
+import 'package:buzzer_app_admin/core/responsive/app_spacing.dart';
+import 'package:buzzer_app_admin/core/theme/theme_context_extensions.dart';
+import 'package:buzzer_app_admin/core/widgets/buttons/app_button.dart';
 
 /// Empty state illustration view.
 class EmptyView extends StatelessWidget {
@@ -35,7 +35,9 @@ class EmptyView extends StatelessWidget {
             Gap.v16,
             Text(
               title,
-              style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             Gap.v8,
@@ -91,7 +93,9 @@ class ErrorView extends StatelessWidget {
             Gap.v16,
             Text(
               title,
-              style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             Gap.v8,
@@ -117,10 +121,7 @@ class ErrorView extends StatelessWidget {
 
 /// No internet connectivity state view.
 class NoInternetView extends StatelessWidget {
-  const NoInternetView({
-    super.key,
-    this.onRetry,
-  });
+  const NoInternetView({super.key, this.onRetry});
 
   final VoidCallback? onRetry;
 
@@ -128,7 +129,8 @@ class NoInternetView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ErrorView(
       title: 'No Internet Connection',
-      message: 'Please check your Wi-Fi or cellular network settings and try again.',
+      message:
+          'Please check your Wi-Fi or cellular network settings and try again.',
       icon: Icons.wifi_off_rounded,
       onRetry: onRetry,
     );
@@ -154,7 +156,9 @@ class MaintenanceView extends StatelessWidget {
             Gap.v16,
             Text(
               'Under Scheduled Maintenance',
-              style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             Gap.v8,

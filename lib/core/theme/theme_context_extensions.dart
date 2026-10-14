@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/theme/theme_extensions.dart';
+import 'package:buzzer_app_admin/core/theme/theme_extensions.dart';
 
 /// Ergonomic theme access extensions on [BuildContext].
 extension ThemeContextExtension on BuildContext {

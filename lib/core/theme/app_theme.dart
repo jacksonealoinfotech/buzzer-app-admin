@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_base_template/core/theme/color_scheme_builder.dart';
-import 'package:flutter_base_template/core/theme/theme_extensions.dart';
+import 'package:buzzer_app_admin/core/theme/color_scheme_builder.dart';
+import 'package:buzzer_app_admin/core/theme/theme_extensions.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
 

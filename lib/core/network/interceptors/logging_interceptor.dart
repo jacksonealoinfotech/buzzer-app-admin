@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base_template/core/security/redacting_logger.dart';
+import 'package:buzzer_app_admin/core/security/redacting_logger.dart';
 
 /// HTTP logger interceptor filtering sensitive payload tokens through [RedactingLogger].
 class LoggingInterceptor extends Interceptor {
@@ -20,9 +20,14 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
     if (kDebugMode) {
-      _logger.info('<-- HTTP ${response.statusCode} ${response.requestOptions.uri}');
+      _logger.info(
+        '<-- HTTP ${response.statusCode} ${response.requestOptions.uri}',
+      );
     }
     handler.next(response);
   }

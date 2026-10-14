@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_template/core/responsive/responsive_context.dart';
+import 'package:buzzer_app_admin/core/responsive/responsive_context.dart';
 
 /// Navigation item model for adaptive shell scaffolds.
 final class AdaptiveNavigationDestination {
