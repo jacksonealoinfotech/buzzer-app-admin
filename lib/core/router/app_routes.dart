@@ -1,21 +1,39 @@
+import 'package:buzzer_app_admin/features/all_games/presenation/screen/all_games_screen.dart';
+import 'package:buzzer_app_admin/features/dashboard/presenation/screen/dashboard_screen.dart';
+import 'package:buzzer_app_admin/features/onboarding/login/presenation/screen/login_screen.dart';
+import 'package:buzzer_app_admin/features/onboarding/splash/presenation/screen/splash_screen.dart';
+import 'package:buzzer_app_admin/features/player_directory/presenation/screen/player_directory_screen.dart';
+import 'package:buzzer_app_admin/features/reports_moderation/presenation/screen/reports_moderation_screen.dart';
+import 'package:buzzer_app_admin/features/settings/presenation/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buzzer_app_admin/core/responsive/adaptive_scaffold.dart';
 import 'package:buzzer_app_admin/core/security/security_check_screen.dart';
-import 'package:buzzer_app_admin/core/widgets/demo/explore_screen.dart';
-import 'package:buzzer_app_admin/core/widgets/demo/login_screen.dart';
-import 'package:buzzer_app_admin/core/widgets/demo/settings_screen.dart';
-import 'package:buzzer_app_admin/core/widgets/demo/showcase_screen.dart';
 
 part 'app_routes.g.dart';
+
+@TypedGoRoute<SplashRoute>(path: '/splash')
+class SplashRoute extends GoRouteData with $SplashRoute {
+  const SplashRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => SplashScreen(
+    onFinished: () {
+      const LoginRoute().go(context);
+    },
+  );
+}
 
 @TypedGoRoute<LoginRoute>(path: '/login')
 class LoginRoute extends GoRouteData with $LoginRoute {
   const LoginRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const LoginScreen();
+  Widget build(BuildContext context, GoRouterState state) => LoginScreen(
+    onSuccess: () {
+      const DashboardRoute().go(context);
+    },
+  );
 }
 
 @TypedGoRoute<SecurityCheckRoute>(path: '/security-check')
@@ -29,12 +47,22 @@ class SecurityCheckRoute extends GoRouteData with $SecurityCheckRoute {
 
 @TypedStatefulShellRoute<AppShellRouteData>(
   branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
-    TypedStatefulShellBranch<HomeBranchData>(
-      routes: <TypedRoute<RouteData>>[TypedGoRoute<HomeRoute>(path: '/')],
+    TypedStatefulShellBranch<DashBoardBranchData>(
+      routes: <TypedRoute<RouteData>>[TypedGoRoute<DashboardRoute>(path: '/')],
     ),
-    TypedStatefulShellBranch<ExploreBranchData>(
+    TypedStatefulShellBranch<GamesBranchData>(
       routes: <TypedRoute<RouteData>>[
-        TypedGoRoute<ExploreRoute>(path: '/explore'),
+        TypedGoRoute<GamesRoute>(path: '/all-games'),
+      ],
+    ),
+    TypedStatefulShellBranch<PlayersBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<PlayersRoute>(path: '/all-players'),
+      ],
+    ),
+    TypedStatefulShellBranch<ReportsBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<ReportsRoute>(path: '/reports'),
       ],
     ),
     TypedStatefulShellBranch<SettingsBranchData>(
@@ -65,12 +93,22 @@ class AppShellRouteData extends StatefulShellRouteData {
         AdaptiveNavigationDestination(
           icon: Icon(Icons.home_outlined),
           selectedIcon: Icon(Icons.home_rounded),
-          label: 'Showcase',
+          label: 'Dashboard',
         ),
         AdaptiveNavigationDestination(
-          icon: Icon(Icons.explore_outlined),
-          selectedIcon: Icon(Icons.explore_rounded),
-          label: 'Explore',
+          icon: Icon(Icons.games_outlined),
+          label: 'Games',
+          selectedIcon: Icon(Icons.games),
+        ),
+        AdaptiveNavigationDestination(
+          icon: Icon(Icons.group_outlined),
+          selectedIcon: Icon(Icons.group),
+          label: 'Players',
+        ),
+        AdaptiveNavigationDestination(
+          icon: Icon(Icons.assignment_outlined),
+          selectedIcon: Icon(Icons.assessment),
+          label: 'Reports',
         ),
         AdaptiveNavigationDestination(
           icon: Icon(Icons.settings_outlined),
@@ -83,32 +121,55 @@ class AppShellRouteData extends StatefulShellRouteData {
   }
 }
 
-class HomeBranchData extends StatefulShellBranchData {
-  const HomeBranchData();
+class DashBoardBranchData extends StatefulShellBranchData {
+  const DashBoardBranchData();
 }
 
-class ExploreBranchData extends StatefulShellBranchData {
-  const ExploreBranchData();
+class GamesBranchData extends StatefulShellBranchData {
+  const GamesBranchData();
+}
+
+class PlayersBranchData extends StatefulShellBranchData {
+  const PlayersBranchData();
+}
+
+class ReportsBranchData extends StatefulShellBranchData {
+  const ReportsBranchData();
 }
 
 class SettingsBranchData extends StatefulShellBranchData {
   const SettingsBranchData();
 }
 
-class HomeRoute extends GoRouteData with $HomeRoute {
-  const HomeRoute();
+class DashboardRoute extends GoRouteData with $DashboardRoute {
+  const DashboardRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const ShowcaseScreen();
+      const DashboardScreen();
 }
 
-class ExploreRoute extends GoRouteData with $ExploreRoute {
-  const ExploreRoute();
+class GamesRoute extends GoRouteData with $GamesRoute {
+  const GamesRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const ExploreScreen();
+      const AllGamesScreen();
+}
+
+class PlayersRoute extends GoRouteData with $PlayersRoute {
+  const PlayersRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PlayerDirectoryScreen();
+}
+
+class ReportsRoute extends GoRouteData with $ReportsRoute {
+  const ReportsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ReportsModerationScreen();
 }
 
 class SettingsRoute extends GoRouteData with $SettingsRoute {
