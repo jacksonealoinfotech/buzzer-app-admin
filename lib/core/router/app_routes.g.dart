@@ -7,10 +7,37 @@ part of 'app_routes.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
+  $splashRoute,
   $loginRoute,
   $securityCheckRoute,
   $appShellRouteData,
 ];
+
+RouteBase get $splashRoute => GoRouteData.$route(
+  path: '/splash',
+  hasOverriddenOnExit: false,
+  factory: $SplashRoute._fromState,
+);
+
+mixin $SplashRoute on GoRouteData {
+  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
+
+  @override
+  String get location => GoRouteData.$location('/splash');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
 
 RouteBase get $loginRoute => GoRouteData.$route(
   path: '/login',
@@ -73,16 +100,34 @@ RouteBase get $appShellRouteData => StatefulShellRouteData.$route(
         GoRouteData.$route(
           path: '/',
           hasOverriddenOnExit: false,
-          factory: $HomeRoute._fromState,
+          factory: $DashboardRoute._fromState,
         ),
       ],
     ),
     StatefulShellBranchData.$branch(
       routes: [
         GoRouteData.$route(
-          path: '/explore',
+          path: '/all-games',
           hasOverriddenOnExit: false,
-          factory: $ExploreRoute._fromState,
+          factory: $GamesRoute._fromState,
+        ),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/all-players',
+          hasOverriddenOnExit: false,
+          factory: $PlayersRoute._fromState,
+        ),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/reports',
+          hasOverriddenOnExit: false,
+          factory: $ReportsRoute._fromState,
         ),
       ],
     ),
@@ -103,8 +148,9 @@ extension $AppShellRouteDataExtension on AppShellRouteData {
       const AppShellRouteData();
 }
 
-mixin $HomeRoute on GoRouteData {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+mixin $DashboardRoute on GoRouteData {
+  static DashboardRoute _fromState(GoRouterState state) =>
+      const DashboardRoute();
 
   @override
   String get location => GoRouteData.$location('/');
@@ -123,11 +169,51 @@ mixin $HomeRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin $ExploreRoute on GoRouteData {
-  static ExploreRoute _fromState(GoRouterState state) => const ExploreRoute();
+mixin $GamesRoute on GoRouteData {
+  static GamesRoute _fromState(GoRouterState state) => const GamesRoute();
 
   @override
-  String get location => GoRouteData.$location('/explore');
+  String get location => GoRouteData.$location('/all-games');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PlayersRoute on GoRouteData {
+  static PlayersRoute _fromState(GoRouterState state) => const PlayersRoute();
+
+  @override
+  String get location => GoRouteData.$location('/all-players');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $ReportsRoute on GoRouteData {
+  static ReportsRoute _fromState(GoRouterState state) => const ReportsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/reports');
 
   @override
   void go(BuildContext context) => context.go(location);

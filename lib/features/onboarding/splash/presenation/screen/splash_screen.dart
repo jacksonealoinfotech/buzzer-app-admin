@@ -3,22 +3,23 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Buzzer Super Admin splash.
-///
-/// Uses ONLY `Theme.of(context).colorScheme` -> light/dark works automatically.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
     super.key,
-    this.onFinished,
-    this.loadingDuration = const Duration(milliseconds: 2800),
+    required this.onFinished,
+    this.duration = const Duration(milliseconds: 2800),
   });
 
-  /// Called when the progress bar completes. Navigate to login/dashboard here.
-  /// (Run your real startup work -> token check, config -> and call this when done.)
-  final VoidCallback? onFinished;
+  final VoidCallback onFinished;
+  final Duration duration;
 
-  /// How long the progress bar takes to fill.
-  final Duration loadingDuration;
+  /// Smooth fade transition you can use when leaving the splash.
+  static Route<T> fadeRoute<T>(Widget page) => PageRouteBuilder<T>(
+    transitionDuration: const Duration(milliseconds: 500),
+    pageBuilder: (_, _, _) => page,
+    transitionsBuilder: (_, animation, _, child) =>
+        FadeTransition(opacity: animation, child: child),
+  );
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -26,221 +27,232 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late final AnimationController _intro; // logo + text entrance
-  late final AnimationController _progress; // loading bar
-  late final AnimationController _loop; // ripples, waves, floating orb
+  late final AnimationController _entrance; // one-time intro timeline
+  late final AnimationController _ripple; // looping ripple rings
+  late final AnimationController _float; // background drift + bolt glow
 
-  late final Animation<double> _logoScale;
-  late final Animation<double> _logoTurn;
-  late final Animation<double> _title;
-  late final Animation<double> _subtitle;
-  late final Animation<double> _tagline;
-  late final Animation<double> _barFade;
+  late final Animation<double> _boltScale;
+  late final Animation<double> _boltFade;
+  late final Animation<double> _wordFade;
+  late final Animation<double> _taglineFade;
+  late final Animation<double> _progress;
 
   @override
   void initState() {
     super.initState();
 
-    _intro = AnimationController(
+    _entrance = AnimationController(vsync: this, duration: widget.duration);
+    _ripple = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
-    );
-
-    _loop = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 6),
+      duration: const Duration(milliseconds: 2200),
     )..repeat();
-
-    _progress = AnimationController(
+    _float = AnimationController(
       vsync: this,
-      duration: widget.loadingDuration,
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
+
+    Animation<double> interval(
+      double b,
+      double e, [
+      Curve c = Curves.easeOutCubic,
+    ]) => CurvedAnimation(
+      parent: _entrance,
+      curve: Interval(b, e, curve: c),
     );
 
-    Animation<double> interval(double a, double b, Curve c) => CurvedAnimation(
-      parent: _intro,
-      curve: Interval(a, b, curve: c),
-    );
+    _boltScale = interval(0.0, 0.35, Curves.elasticOut);
+    _boltFade = interval(0.0, 0.15);
+    _wordFade = interval(0.25, 0.55);
+    _taglineFade = interval(0.45, 0.75);
+    _progress = interval(0.15, 1.0, Curves.easeInOut);
 
-    _logoScale = interval(0.0, 0.55, Curves.easeOutBack);
-    _logoTurn = interval(0.0, 0.55, Curves.easeOutCubic);
-    _title = interval(0.30, 0.70, Curves.easeOutCubic);
-    _subtitle = interval(0.42, 0.80, Curves.easeOutCubic);
-    _tagline = interval(0.55, 1.0, Curves.easeOutCubic);
-    _barFade = interval(0.70, 1.0, Curves.easeOut);
-
-    _intro.forward();
-    Future<void>.delayed(const Duration(milliseconds: 900), () {
-      if (mounted) _progress.forward();
-    });
-
-    _progress.addStatusListener((status) async {
-      if (status == AnimationStatus.completed) {
-        await Future<void>.delayed(const Duration(milliseconds: 250));
-        if (mounted) widget.onFinished?.call();
-      }
+    _entrance.forward().whenComplete(() {
+      if (mounted) widget.onFinished();
     });
   }
 
   @override
   void dispose() {
-    _intro.dispose();
-    _progress.dispose();
-    _loop.dispose();
+    _entrance.dispose();
+    _ripple.dispose();
+    _float.dispose();
     super.dispose();
-  }
-
-  Widget _reveal(Animation<double> anim, Widget child, {double dy = 0.25}) {
-    return FadeTransition(
-      opacity: anim,
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: Offset(0, dy),
-          end: Offset.zero,
-        ).animate(anim),
-        child: child,
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: cs.brightness == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark,
-        statusBarBrightness: cs.brightness,
-      ),
+      value: (isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark)
+          .copyWith(statusBarColor: Colors.transparent),
       child: Scaffold(
         backgroundColor: cs.surface,
         body: Stack(
+          fit: StackFit.expand,
           children: [
-            // ---- Background gradient
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      cs.surface,
-                      cs.surfaceContainerLow,
-                      cs.primaryContainer.withValues(alpha: 0.45),
-                    ],
-                  ),
+            // Soft vertical gradient: surface → primaryContainer
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    cs.surface,
+                    cs.primaryContainer.withValues(alpha: 0.55),
+                  ],
                 ),
               ),
             ),
 
-            // ---- Waves at the bottom
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: MediaQuery.sizeOf(context).height * 0.34,
-              child: AnimatedBuilder(
-                animation: _loop,
-                builder: (context, _) => CustomPaint(
-                  painter: _WavePainter(
-                    phase: _loop.value * 2 * math.pi,
-                    colorA: cs.primary.withValues(alpha: 0.12),
-                    colorB: cs.tertiary.withValues(alpha: 0.12),
-                    colorC: cs.secondary.withValues(alpha: 0.08),
-                  ),
-                ),
-              ),
-            ),
+            _Orbs(animation: _float),
 
-            // ---- Floating orb
-            AnimatedBuilder(
-              animation: _loop,
-              builder: (context, _) {
-                final size = MediaQuery.sizeOf(context);
-                final dy = math.sin(_loop.value * 2 * math.pi) * 12;
-                return Positioned(
-                  right: size.width * 0.08,
-                  top: size.height * 0.62 + dy,
-                  child: FadeTransition(
-                    opacity: _barFade,
-                    child: Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          center: const Alignment(-0.3, -0.3),
-                          colors: [
-                            cs.primary.withValues(alpha: 0.55),
-                            cs.tertiary.withValues(alpha: 0.25),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            // ---- Center content
-            SafeArea(
+            // Logo + wordmark + tagline
+            Center(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Spacer(flex: 5),
-                  _buildLogo(cs),
-                  const SizedBox(height: 28),
-                  _reveal(
-                    _title,
-                    ShaderMask(
-                      shaderCallback: (rect) =>
-                          LinearGradient(colors: [cs.primary, cs.tertiary])
-                              .createShader(rect),
-                      child: Text(
-                        'Buzzer',
-                        style: text.displaySmall?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -0.5,
-                          color: Colors.white, // masked by the gradient shader
+                  SizedBox(
+                    width: 240,
+                    height: 240,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      children: [
+                        // Expanding ripple rings
+                        AnimatedBuilder(
+                          animation: Listenable.merge([_ripple, _boltFade]),
+                          builder: (context, _) {
+                            return Opacity(
+                              opacity: _boltFade.value,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: List.generate(2, (i) {
+                                  final phase = (_ripple.value + i * 0.5) % 1.0;
+                                  final size = 110 + 130 * phase;
+                                  return Container(
+                                    width: size,
+                                    height: size,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: cs.primary.withValues(
+                                          alpha: (1 - phase) * 0.28,
+                                        ),
+                                        width: 2,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                            );
+                          },
                         ),
-                      ),
+
+                        // Pulsing glow
+                        AnimatedBuilder(
+                          animation: _float,
+                          builder: (context, _) {
+                            final pulse =
+                                0.85 + 0.15 * math.sin(_float.value * math.pi);
+                            return FadeTransition(
+                              opacity: _boltFade,
+                              child: Container(
+                                width: 190 * pulse,
+                                height: 190 * pulse,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: RadialGradient(
+                                    colors: [
+                                      cs.primary.withValues(alpha: 0.28),
+                                      cs.primary.withValues(alpha: 0),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        // Bolt
+                        FadeTransition(
+                          opacity: _boltFade,
+                          child: ScaleTransition(
+                            scale: _boltScale,
+                            child: ShaderMask(
+                              shaderCallback: (rect) => LinearGradient(
+                                colors: [cs.primary, cs.tertiary],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ).createShader(rect),
+                              child: const Icon(
+                                Icons.bolt_rounded,
+                                size: 130,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 4),
-                  _reveal(
-                    _subtitle,
-                    Text(
-                      'Super Admin',
-                      style: text.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: cs.onSurface,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _reveal(
-                    _tagline,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48),
+
+                  // Wordmark
+                  FadeTransition(
+                    opacity: _wordFade,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.3),
+                        end: Offset.zero,
+                      ).animate(_wordFade),
                       child: Text(
-                        'Manage games. Monitor players.\nKeep the competition fair.',
-                        textAlign: TextAlign.center,
-                        style: text.bodyLarge?.copyWith(
-                          color: cs.onSurface.withValues(alpha: 0.6),
-                          height: 1.5,
+                        'Buzzer',
+                        style: TextStyle(
+                          fontSize: 52,
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          letterSpacing: -1,
+                          color: cs.primary,
                         ),
                       ),
                     ),
                   ),
-                  const Spacer(flex: 4),
+                  const SizedBox(height: 10),
+
+                  // Tagline
                   FadeTransition(
-                    opacity: _barFade,
-                    child: _ProgressBar(animation: _progress),
+                    opacity: _taglineFade,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.4),
+                        end: Offset.zero,
+                      ).animate(_taglineFade),
+                      child: Text(
+                        'Super Admin',
+                        style: text.titleMedium?.copyWith(
+                          color: cs.onSurface.withValues(alpha: 0.75),
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 56),
                 ],
+              ),
+            ),
+
+            // Bottom progress line
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 40 + MediaQuery.of(context).padding.bottom,
+              child: Center(
+                child: FadeTransition(
+                  opacity: _boltFade,
+                  child: _ProgressLine(animation: _progress),
+                ),
               ),
             ),
           ],
@@ -248,179 +260,107 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
   }
-
-  Widget _buildLogo(ColorScheme cs) {
-    const double size = 112;
-    return SizedBox(
-      width: size * 2.2,
-      height: size * 2.2,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Expanding ripple rings
-          AnimatedBuilder(
-            animation: _loop,
-            builder: (context, _) {
-              return Stack(
-                alignment: Alignment.center,
-                children: List.generate(2, (i) {
-                  final t = (_loop.value * 2 + i * 0.5) % 1.0;
-                  final scale = 1 + t * 0.9;
-                  return Opacity(
-                    opacity: (1 - t) * 0.35,
-                    child: Container(
-                      width: size * scale,
-                      height: size * scale,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: cs.primary, width: 2),
-                      ),
-                    ),
-                  );
-                }),
-              );
-            },
-          ),
-          // Logo
-          AnimatedBuilder(
-            animation: Listenable.merge([_intro, _loop]),
-            builder: (context, _) {
-              final glow = (math.sin(_loop.value * 2 * math.pi * 2) + 1) / 2;
-              return Transform.rotate(
-                angle: (1 - _logoTurn.value) * -0.5,
-                child: Transform.scale(
-                  scale: _logoScale.value.clamp(0.0, 1.3),
-                  child: Opacity(
-                    opacity: _logoTurn.value.clamp(0.0, 1.0),
-                    child: Container(
-                      width: size,
-                      height: size,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(32),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [cs.primary, cs.tertiary],
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: cs.primary.withValues(
-                              alpha: 0.30 + 0.2 * glow,
-                            ),
-                            blurRadius: 28 + 16 * glow,
-                            offset: const Offset(0, 14),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        Icons.bolt_rounded,
-                        size: 72,
-                        color: cs.onPrimary,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }
 
-// ======================================================================
-// Loading bar
-// ======================================================================
+class _ProgressLine extends StatelessWidget {
+  const _ProgressLine({required this.animation});
 
-class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({required this.animation});
   final Animation<double> animation;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final progress = CurvedAnimation(
-      parent: animation,
-      curve: Curves.easeInOutCubic,
-    );
-
-    return Semantics(
-      label: 'Loading',
-      child: Container(
-        width: 120,
-        height: 5,
-        decoration: BoxDecoration(
-          color: cs.primary.withValues(alpha: 0.15),
-          borderRadius: BorderRadius.circular(3),
-        ),
-        child: AnimatedBuilder(
-          animation: progress,
-          builder: (context, _) => Align(
-            alignment: Alignment.centerLeft,
-            child: FractionallySizedBox(
-              widthFactor: progress.value.clamp(0.04, 1.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
-                  gradient: LinearGradient(colors: [cs.primary, cs.tertiary]),
+    return SizedBox(
+      width: 120,
+      height: 4,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: Stack(
+          children: [
+            Container(color: cs.outlineVariant.withValues(alpha: 0.6)),
+            AnimatedBuilder(
+              animation: animation,
+              builder: (context, _) => FractionallySizedBox(
+                widthFactor: animation.value,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [cs.primary, cs.tertiary]),
+                  ),
+                  child: const SizedBox.expand(),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-// ======================================================================
-// Soft animated waves
-// ======================================================================
+/// Floating orbs/blobs that drift slowly (like the concept board).
+class _Orbs extends StatelessWidget {
+  const _Orbs({required this.animation});
 
-class _WavePainter extends CustomPainter {
-  _WavePainter({
-    required this.phase,
-    required this.colorA,
-    required this.colorB,
-    required this.colorC,
-  });
-
-  final double phase;
-  final Color colorA;
-  final Color colorB;
-  final Color colorC;
-
-  Path _wave(Size size, double yBase, double amp, double shift, double freq) {
-    final path = Path()..moveTo(0, size.height);
-    for (double x = 0; x <= size.width; x += 4) {
-      final y =
-          yBase +
-          math.sin((x / size.width) * 2 * math.pi * freq + phase + shift) * amp;
-      path.lineTo(x, y);
-    }
-    path
-      ..lineTo(size.width, size.height)
-      ..close();
-    return path;
-  }
+  final Animation<double> animation;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawPath(
-      _wave(size, size.height * 0.35, 18, 0, 1.0),
-      Paint()..color = colorA,
-    );
-    canvas.drawPath(
-      _wave(size, size.height * 0.5, 22, 1.8, 1.3),
-      Paint()..color = colorB,
-    );
-    canvas.drawPath(
-      _wave(size, size.height * 0.68, 16, 3.6, 0.9),
-      Paint()..color = colorC,
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    Widget blob(Color color, double size, {double strength = 0.55}) =>
+        Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              colors: [
+                color.withValues(alpha: strength),
+                color.withValues(alpha: 0),
+              ],
+            ),
+          ),
+        );
+
+    return IgnorePointer(
+      child: AnimatedBuilder(
+        animation: animation,
+        builder: (context, _) {
+          final t = Curves.easeInOut.transform(animation.value);
+          return Stack(
+            children: [
+              Positioned(
+                top: -70 + 30 * t,
+                right: -80 + 20 * t,
+                child: blob(cs.primaryContainer, 300),
+              ),
+              Positioned(
+                bottom: 40 + 25 * (1 - t),
+                right: -70 + 30 * t,
+                child: blob(cs.tertiaryContainer, 240),
+              ),
+              Positioned(
+                bottom: -90 + 20 * t,
+                left: -90 + 25 * (1 - t),
+                child: blob(cs.secondaryContainer, 300, strength: 0.45),
+              ),
+              // Small floating dot, top-right
+              Positioned(
+                top: 150 + 12 * t,
+                right: 70 - 10 * t,
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: cs.tertiary.withValues(alpha: 0.5),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
-
-  @override
-  bool shouldRepaint(covariant _WavePainter old) => old.phase != phase;
 }

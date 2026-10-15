@@ -1,5 +1,3 @@
-import 'dart:ui' show FontFeature;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -201,10 +199,10 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Scaffold(
       backgroundColor: cs.surface,
-      bottomNavigationBar: AdminBottomNav(
-        currentIndex: widget.currentTab,
-        onSelected: widget.onTabSelected,
-      ),
+      // bottomNavigationBar: AdminBottomNav(
+      //   currentIndex: widget.currentTab,
+      //   onSelected: widget.onTabSelected,
+      // ),
       body: SafeArea(
         bottom: false,
         child: RefreshIndicator(

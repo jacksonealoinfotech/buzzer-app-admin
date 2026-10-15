@@ -15,43 +15,43 @@ class OfflineBanner extends StatelessWidget {
         return Stack(
           children: [
             child,
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              top: isConnected ? -50 : 0,
-              left: 0,
-              right: 0,
-              child: Material(
-                color: Colors.red.shade900,
-                elevation: 4,
-                child: SafeArea(
-                  bottom: false,
-                  child: Container(
-                    height: 36,
-                    alignment: Alignment.center,
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.wifi_off_rounded,
-                          size: 16,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          'No Internet Connection • Offline Mode Active',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // AnimatedPositioned(
+            //   duration: const Duration(milliseconds: 300),
+            //   curve: Curves.easeInOut,
+            //   top: isConnected ? -50 : 0,
+            //   left: 0,
+            //   right: 0,
+            //   child: Material(
+            //     color: Colors.red.shade900,
+            //     elevation: 4,
+            //     child: SafeArea(
+            //       bottom: false,
+            //       child: Container(
+            //         height: 36,
+            //         alignment: Alignment.center,
+            //         child: const Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             Icon(
+            //               Icons.wifi_off_rounded,
+            //               size: 16,
+            //               color: Colors.white,
+            //             ),
+            //             SizedBox(width: 8),
+            //             Text(
+            //               'No Internet Connection • Offline Mode Active',
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: 12,
+            //                 fontWeight: FontWeight.w600,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         );
       },

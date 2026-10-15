@@ -80,7 +80,6 @@ class _LoginScreenState extends State<LoginScreen>
   bool _obscure = true;
   bool _remember = true;
   bool _useBackup = false;
-  bool _codeError = false;
   bool _autoValidate = false;
   bool _pressed = false;
   String? _error;
@@ -145,10 +144,6 @@ class _LoginScreenState extends State<LoginScreen>
     return null;
   }
 
-  bool get _codeValid => _useBackup
-      ? _backupCtrl.text.trim().length >= 6
-      : _otpCtrl.text.length == 6;
-
   Future<void> _submit() async {
     if (_status != _ButtonState.idle) return;
     FocusScope.of(context).unfocus();
@@ -159,10 +154,8 @@ class _LoginScreenState extends State<LoginScreen>
     });
 
     final formOk = _formKey.currentState?.validate() ?? false;
-    final codeOk = _codeValid;
-    setState(() => _codeError = !codeOk);
 
-    if (!formOk || !codeOk) {
+    if (!formOk) {
       HapticFeedback.mediumImpact();
       _shake.forward(from: 0);
       return;
@@ -204,22 +197,8 @@ class _LoginScreenState extends State<LoginScreen>
     setState(() {
       _status = _ButtonState.idle;
       _error = message;
-      _codeError = true;
     });
     _shake.forward(from: 0);
-  }
-
-  void _toggleBackup() {
-    setState(() {
-      _useBackup = !_useBackup;
-      _codeError = false;
-      _otpCtrl.clear();
-      _backupCtrl.clear();
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      (_useBackup ? _backupFocus : _otpFocus).requestFocus();
-    });
   }
 
   // ---------------------------------------------------------------- build
@@ -407,10 +386,6 @@ class _LoginScreenState extends State<LoginScreen>
             ),
             const SizedBox(height: 4),
 
-            // ---- Two-factor card
-            _reveal(4, _buildTwoFactorCard(context, cs)),
-            const SizedBox(height: 16),
-
             // ---- Error banner
             AnimatedSize(
               duration: const Duration(milliseconds: 250),
@@ -458,185 +433,6 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTwoFactorCard(BuildContext context, ColorScheme cs) {
-    final text = Theme.of(context).textTheme;
-    final muted = cs.onSurface.withValues(alpha: 0.6);
-
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: _codeError ? cs.error : cs.outlineVariant,
-          width: _codeError ? 1.5 : 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: cs.primaryContainer,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.shield_outlined,
-                  size: 18,
-                  color: cs.onPrimaryContainer,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Two-Factor Authentication',
-                  style: text.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: Text(
-              _useBackup
-                  ? 'Enter one of your saved backup codes.'
-                  : 'Enter the 6-digit code from your authenticator app.',
-              key: ValueKey(_useBackup),
-              style: text.bodySmall?.copyWith(color: muted),
-            ),
-          ),
-          const SizedBox(height: 14),
-          AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutCubic,
-            alignment: Alignment.topCenter,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              switchInCurve: Curves.easeOutCubic,
-              transitionBuilder: (child, anim) => FadeTransition(
-                opacity: anim,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.05, 0),
-                    end: Offset.zero,
-                  ).animate(anim),
-                  child: child,
-                ),
-              ),
-              child: _useBackup
-                  ? TextField(
-                      key: const ValueKey('backup'),
-                      controller: _backupCtrl,
-                      focusNode: _backupFocus,
-                      textCapitalization: TextCapitalization.characters,
-                      textInputAction: TextInputAction.done,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[A-Za-z0-9\-]'),
-                        ),
-                        LengthLimitingTextInputFormatter(16),
-                      ],
-                      onChanged: (_) {
-                        if (_codeError) setState(() => _codeError = false);
-                      },
-                      onSubmitted: (_) => _submit(),
-                      decoration: _decoration(
-                        cs,
-                        label: 'Backup code',
-                        icon: Icons.key_rounded,
-                        fill: cs.surface,
-                      ),
-                    )
-                  : _OtpInput(
-                      key: const ValueKey('otp'),
-                      controller: _otpCtrl,
-                      focusNode: _otpFocus,
-                      hasError: _codeError,
-                      onChanged: (_) {
-                        if (_codeError) setState(() => _codeError = false);
-                      },
-                      onCompleted: _submit,
-                    ),
-            ),
-          ),
-          AnimatedSize(
-            duration: const Duration(milliseconds: 200),
-            alignment: Alignment.topLeft,
-            child: _codeError && _error == null
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      _useBackup
-                          ? 'Enter a valid backup code'
-                          : 'Enter all 6 digits',
-                      style: text.bodySmall?.copyWith(color: cs.error),
-                    ),
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () => setState(() => _remember = !_remember),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: Checkbox(
-                            value: _remember,
-                            onChanged: (v) =>
-                                setState(() => _remember = v ?? false),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            'Remember this device',
-                            style: text.bodySmall,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: _toggleBackup,
-                style: TextButton.styleFrom(
-                  minimumSize: const Size(0, 36),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  _useBackup ? 'Use authenticator' : 'Use backup code',
-                  style: text.bodySmall?.copyWith(
-                    color: cs.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
@@ -910,137 +706,6 @@ class _ErrorBanner extends StatelessWidget {
 // 6-box OTP input backed by ONE hidden TextField
 // (so paste, SMS/authenticator autofill and backspace all just work)
 // ======================================================================
-
-class _OtpInput extends StatelessWidget {
-  const _OtpInput({
-    super.key,
-    required this.controller,
-    required this.focusNode,
-    required this.hasError,
-    required this.onChanged,
-    required this.onCompleted,
-    this.length = 6,
-  });
-
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final bool hasError;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onCompleted;
-  final int length;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => focusNode.requestFocus(),
-      child: Stack(
-        children: [
-          // The real (invisible) input.
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0,
-              child: TextField(
-                controller: controller,
-                focusNode: focusNode,
-                keyboardType: TextInputType.number,
-                autofillHints: const [AutofillHints.oneTimeCode],
-                enableInteractiveSelection: false,
-                showCursor: false,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(length),
-                ],
-                onChanged: (value) {
-                  HapticFeedback.selectionClick();
-                  onChanged(value);
-                  if (value.length == length) onCompleted();
-                },
-              ),
-            ),
-          ),
-          // The visible boxes.
-          IgnorePointer(
-            child: ListenableBuilder(
-              listenable: Listenable.merge([controller, focusNode]),
-              builder: (context, _) {
-                final value = controller.text;
-                final active = value.length.clamp(0, length - 1);
-                return Row(
-                  children: List.generate(length, (i) {
-                    final filled = i < value.length;
-                    final isActive = focusNode.hasFocus && i == active;
-                    final Color borderColor = hasError
-                        ? cs.error
-                        : isActive
-                        ? cs.primary
-                        : filled
-                        ? cs.primary.withValues(alpha: 0.5)
-                        : cs.outlineVariant;
-
-                    return Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          right: i == length - 1 ? 0 : 8,
-                        ),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 180),
-                          curve: Curves.easeOut,
-                          height: 54,
-                          alignment: Alignment.center,
-                          transform: Matrix4.identity()
-                            ..scale(isActive ? 1.06 : 1.0),
-                          transformAlignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: filled
-                                ? cs.primaryContainer.withValues(alpha: 0.5)
-                                : cs.surface,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: borderColor,
-                              width: isActive || hasError ? 2 : 1,
-                            ),
-                          ),
-                          child: filled
-                              ? TweenAnimationBuilder<double>(
-                                  key: ValueKey('$i-${value[i]}'),
-                                  tween: Tween(begin: 0.4, end: 1),
-                                  duration: const Duration(milliseconds: 180),
-                                  curve: Curves.easeOutBack,
-                                  builder: (context, scale, child) =>
-                                      Transform.scale(
-                                        scale: scale,
-                                        child: child,
-                                      ),
-                                  child: Text(
-                                    value[i],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: cs.onSurface,
-                                        ),
-                                  ),
-                                )
-                              : (isActive
-                                    ? _BlinkingCursor(color: cs.primary)
-                                    : null),
-                        ),
-                      ),
-                    );
-                  }),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class _BlinkingCursor extends StatefulWidget {
   const _BlinkingCursor({required this.color});
